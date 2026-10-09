@@ -345,14 +345,24 @@
       f'(x) = \sum_{n=0}^\infty na_nx^{n-1} = \sum_{n=1}^\infty na_nx^{n-1}
     \end{equation}
     By making a change of variable $k = n-1$, and noticing that the first term drops out of the above series (because $n=0$), we have
-    \begin{equation}
+    \begin{equation}\label{eq:derivative-power-series}
       f'(x) = \sum_{k=0}^\infty (k+1)a_{k+1}x^k.
     \end{equation}
     This procedure for getting the power series into the desired powers of $x$ is called \emph{index shifting}. It is important to keep track of the initial value for $k$ and $n$ in the sum. This is analagous to changing the bounds of integration when performing a change of variable.
 
-    A remarkable feature of the radius of convergence is that it is \emph{invariant under differentiation or integration of the power series}. Consider our example.
+    A remarkable feature of the radius of convergence is that it is \emph{invariant under differentiation or integration of the power series}. Consider our example. Differentiating term by term or using (\ref{eq:derivative-power-series}), the derivative series is
+    \begin{equation}
+      f'(x) = \sum_{k=0}^\infty (k+1)\frac{2^{k+1}}{k+1}x^k
+      = \sum_{n=0}^\infty 2^{n+1}x^n.
+    \end{equation}
+    By the ratio test, the radius of convergence of $f'(x)$ is
+    \begin{equation}
+      R = \frac{1}{\lim_{n\to\infty}\frac{2^{n+2}}{2^{n+1}}}
+      = \frac{1}{2},
+    \end{equation}
+    which is the same as the radius of convergence for $f(x)$. The radius of convergence of the integral power series $\int dx f(x)$ is a fun exercise (it should also be $1/2$).
 
-  \item \underline{Notions.} Let
+  \item \underline{Some notions.} Let
     \begin{equation}
       f(x) = \sum_{n=0}^\infty a_n(x-x_0)^n \quad\quad\text{with}\quad\quad R>0.
     \end{equation}
@@ -378,8 +388,21 @@
   \underline{Question:} Every function that is analytic at $x=0$ is infinitely differentiable at $x=0$. Is the converse true? NO!
 
   \underline{Example:}
+  A classic example is the function $f:\RR \to \RR$ given by
+  \begin{equation}
+    f(x) =
+    \begin{cases}
+      e^{-1/x^2}, & x > 0\\
+      0, & x \leq 0
+    \end{cases}
+  \end{equation}
+  This function is infinitely differentiable at $x_0 = 0$ (why?) but is not analytic there. For if it were analytic, its Taylor series would be identically zero since $f^{(n)}(0) = 0$ for all $n$ (look at the value of $f$ for negative $x$ arbitrarily close to zero).
 
-  \underline{Fact:} $0 = \sum_{n=0}^\infty a_nx^n \implies a_n = 0$ for all $n$.
+  \begin{center}
+    \includegraphics[width=0.8\textwidth]{nonanalytic_function}
+  \end{center}
+
+  \underline{Fact:} $\sum_{n=0}^\infty a_nx^n = 0 \implies a_n = 0$ for all $n$. This is just a restatement of what we said above. (If you define $f(x)$ by that power series then we identify the $a_n$ with the derivatives of $f$, which are all zero since $f$ is by assumption identically zero.)
 
 \end{enumerate}
 
