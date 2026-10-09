@@ -451,10 +451,101 @@ We will make the following assumption.
   \end{equation}
   where $p(x) = \frac{Q}{P}(x)$, and $q(x) = \frac{R}{P}(x)$.
 
-  But wait! We need to verify that it is okay to divide by $P(x)$ (what if we are dividing by zero?). If $P(x) \neq 0$, then $P(x) \neq 0$ for all $x$ near $x_0$, and the standard form is valid near $x_0$. In this situation, $x_0$ is called an \textbf{ordinary point}.
+  But wait! We need to verify that it is okay to divide by $P(x)$ (what if we are dividing by zero?). If $P(x_0) \neq 0$, then $P(x) \neq 0$ for all $x$ near $x_0$, and the standard form is valid near $x_0$. In this situation, $x_0$ is called an \textbf{ordinary point}.
+
+\item \underline{Example:} Airy's equation.
+  \begin{equation}\label{eq:airys-eq-example}
+    y'' - xy = 0 \quad\quad (x\in\RR)
+  \end{equation}
+  We can do some quantitative analysis on Airy's equation and make some rough sketches of various solution curves to (\ref{eq:airys-eq-example}). This essentially boils down to using the equation to guess the sign and magnitude of $y''$ at different points on the sketch, and deducing the shape of the solution by forcing it to be consistent with this data. Unfortunately I can't draw in \LaTeX, so refer to the course notes for details.
+
+  To proceed with the solution we use a power series ansatz
+  \begin{equation}
+    y(x) = \sum_{n=0}^\infty a_n(x-x_0)^n = \sum_{n=0}^\infty a_nx^n
+  \end{equation}
+  where $x_0 = 0$.
+
+  Solving the (\ref{eq:airys-eq-example}) amounts to determining the coefficients $a_n$. To do this we need to plug $y(x)$ into (\ref{eq:airys-eq-example}). Let's calculate the derivatives (see the short section on power series):
+  \begin{align}
+    y'(x) &= \sum_{n=0}^\infty \frac{d}{dx}\left[a_nx^n\right]\\
+    &= \sum_{n=1}^\infty na_nx^{n-1}\\
+    y''(x) &= \sum_{n=1}^\infty \frac{d}{dx}\left[na_nx^{n-1}\right]\\
+    &= \sum_{n=2}^\infty n(n-1)a_nx^{n-2}.
+  \end{align}
+  The lower limit of the sums is \emph{very important}. We drop terms when they are zero so that we don't end up with $x$ to negative powers in the derivative (e.g. $na_n = 0$ when $n=0$).
+
+  Plugging into the differential equation, we have
+  \begin{align}
+    \sum_{n=2}^\infty n(n-1)a_nx^{n-2} - x\sum_{n=0}^\infty a_nx^n &= 0\\
+    \implies\sum_{n=2}^\infty n(n-1)a_nx^{n-2} - \sum_{n=0}^\infty a_nx^{n+1} &= 0
+  \end{align}
+  Doing some index shifting with $k = n-2$ in the first sum and $k = n+1$ in the second sum, we get
+  \begin{align}\label{eq:airys-power-series}
+    \sum_{k=0}^\infty (k+2)(k+1)a_{k+2}x^k - \sum_{k=1}^\infty a_{k-1}x^k &= 0.
+  \end{align}
+  Writing out the first few terms, you can convince yourself that we have
+  \begin{align}\label{eq:expansion-of-airys-equation}
+    (2a_2 + 6a_3x + 12a_4x^2 + 20a_5x^3 + \dots) - (a_0x + a_1x^2 + a_2x^3 + a_3x^4 + \dots) &= 0.
+  \end{align}
+  Now we can simply collect terms with the same powers of $x$ and require that all of the coefficients are zero. We can do this because $1$, $x$, $x^2$, $x^3$ $\dots$ are linearly independent functions on an \emph{interval} (they are naturally called the Taylor basis for polynomials and power series). Since we know that the resulting power series is zero for $x$ in an interval (this technically comes from our hypothesis that the ansatz $y(x)$ is a solution), we can use this to determine $a_n$ for all $n$.
+
+  We could use (\ref{eq:expansion-of-airys-equation}) to determine $a_0,a_1,a_2,\dots$, but we would never find them all. So let's do it formally. From (\ref{eq:airys-power-series}), we have
+  \begin{equation}
+    2a_2 + \sum_{k=1}^\infty \left[a_{k+2}(k+2)(k+1) - a_{k-1}\right]x^k = 0,
+  \end{equation}
+  which gives us the equations
+  \begin{equation}
+    \begin{cases}
+      2a_2 = 0,\\
+      a_{k+2}(k+2)(k+1) - a_{k-1} = 0\quad\forall k\geq 1
+    \end{cases}
+  \end{equation}
+  The first equation gives $a_2 = 0$, and the second can be arranged to be
+  \begin{align}
+    a_{k+2} &=  - \frac{a_{k-1}}{(k+2)(k+1)}\quad\forall k\geq 1\\
+    \implies a_{k+3} &=  - \frac{a_k}{(k+3)(k+2)}\quad\forall k\geq 1.
+  \end{align}
+  So any coefficient determines the coefficient three terms later in the series $f(x)$. Once we have $a_0$, we can generate $a_3$, and then $a_6$, and so on. Naturally, the coefficients form three decoupled sequencies or ``chains''
+  \begin{align}
+    &a_0,a_3,a_6,a_9,\dots,a_{3n},\dots\\
+    &a_1,a_4,a_7,a_{10},\dots,a_{3n+1},\dots\\
+    &a_2,a_5,a_8,a_{11},\dots,a_{3n+2},\dots = 0
+  \end{align}
+  The last of these is constant zero because $a_2 = 0$. The other two are controlled by two free parameters $a_0$ and $a_1$. By computing a few of these $a_n$s you will quickly realise a pattern, which you can write down as an explicit formula for coefficients in the first two chains:
+  \begin{align}
+    a_{3n} &= \frac{a_0}{\prod_{k=1}^n(3k-1)(3k)}\\
+    a_{3n+1} &= \frac{a_1}{\prod_{k=1}^n3k(3k+1)}
+  \end{align}
+  (recall the notation $\prod_{k=1}^n q_k = q_1\cdot q_2\cdots q_n$).
+
+  With this information we can simplify our ansatz and obtain the general solution.
+  \begin{align}
+    y(x) &= \sum_{n=0}^\infty a_nx^{n}\\
+    &= \sum_{n=0}^\infty a_{3n}x^{3n} + \sum_{n=0}^\infty a_{3n+1}x^{3n+1}\\
+    &= \sum_{n=0}^\infty \frac{a_0}{\prod_{k=1}^n(3k-1)(3k)}x^{3n} + \sum_{n=0}^\infty \frac{a_1}{\prod_{k=1}^n3k(3k+1)}x^{3n+1}\\
+    &= a_0y_1(x) + a_1y_2(x),
+  \end{align}
+  where $y_1(x)$ and $y_2(x)$ are the two linearly independent solutions given by the power series in the previous line. This completes the derivation of the general solution to Airy's equation.
+
+  \underline{Radius of convergence}
+  Remember that power series functions are only defined within their radius of convergence. Let's check where our solution to the Airy's equation is actually defined!
+
+  For $y_1(x)$,
+  \begin{equation}
+    b_n = \frac{a_0}{\prod_{k=1}^n(3k-1)(3k)}
+  \end{equation}
+  and so by the Ratio test
+  \begin{align}
+    R &= \frac{1}{\lim_{n\to\infty}\frac{|b_{n+1}|}{|b_n|}}\\
+    &= \frac{1}{\lim_{n\to\infty}\frac{\prod_{k=1}^n(3k-1)(3k)}{\prod_{k=1}^{n+1}(3k-1)(3k)}}\\
+    &= \frac{1}{\lim_{n\to\infty}\frac{1}{(3n-1)(3n)}}\\
+    &= \infty.
+  \end{align}
+  This means our power series converges everywhere and we have a solution on the whole real line.
+
+  As a final remark, we can imagine expanding the solution around some other point $x_0 \neq 0$. If we do this, we get faster convergence around the new $x_0$, which is important for numerical applications. In addition, we can imagine situations in which $R < \infty$, in which case it would be necessary to find power series solutions around a collection of points; these solutions can in some cases be ``patched together'' to get a solution on a larger domain than just $[-R,R]$.
+
 
 \end{enumerate}
-
-
 
 \end{document}
