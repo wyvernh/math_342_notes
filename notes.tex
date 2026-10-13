@@ -541,10 +541,103 @@ We will make the following assumption.
     &= \frac{1}{\lim_{n\to\infty}\frac{1}{(3n-1)(3n)}}\\
     &= \infty.
   \end{align}
-  This means our power series converges everywhere and we have a solution on the whole real line.
+  Similarly, the radius of convergence of $y_2$ is also infinity. This means our power series converges everywhere and we have a solution on the whole real line.
 
   As a final remark, we can imagine expanding the solution around some other point $x_0 \neq 0$. If we do this, we get faster convergence around the new $x_0$, which is important for numerical applications. In addition, we can imagine situations in which $R < \infty$, in which case it would be necessary to find power series solutions around a collection of points; these solutions can in some cases be ``patched together'' to get a solution on a larger domain than just $[-R,R]$.
 
+\item \underline{Theorem:} Consider the second order homogeneous ODE with variable coeffients
+  \begin{equation}
+    P(x)y'' + Q(x)y' + R(x)y = 0
+  \end{equation}
+  with standard form
+  \begin{equation}
+    y'' + p(x)y' + q(x)y = 0.
+  \end{equation}
+  We suppose $x_0$ is an ordinary point ($P(x) \neq 0$), and $p(x) = Q(x)/P(x)$, $q(x) = R(x)/P(x)$, and furthermore that $p$ and $q$ are analytic at $x_0$.
+
+  Then
+  \begin{enumerate}
+  \item There exist power series solutions $y_1$ and $y_2$ such that $y = C_1y_1 + C_2y_2$ for all solutions $y$ defined at $x_0$;
+  \item $\{y_1,y_2\}$ is a fundamental set;
+  \item $R_j>0$, where $R_j$ is the radius of of convergence $y_j$ around $x_0$;
+  \item $R_1,R_2 \geq \min\{|z-x_0|: z \in \CC, \,z\text{ are zeros of }P\}$.
+  \end{enumerate}
+  For example, in Airy's equation $P$ has no zeros. By part (d) of this theorem, that means $R_1,R_2 \geq \min \varnothing = \infty$, so $y_1$ and $y_2$ have infinite radius of convergence (as we found in the previous section).
+
+  Note that to apply part (d), we have to search for zeros $z$ (where $P(z) = 0$) \emph{in the complex plane}.
+
+  \underline{Example 1:} Consider the DE
+  \begin{equation}
+    (1-x)y'' - y' = 0,\quad\quad x_0 = 0
+  \end{equation}
+  Then $P(x) = 1-x$, $Q(x) = -1$, $R(x) = 0$. $P(x)$ has a single zero at $x = 1$, so the theorem says a fundamental set of power series solutions can be found that converge on the disk of radius 1 around 0. Let's verify this by solving the differential equation.
+  \begin{align}
+    v = y' &\implies (1-x)v' - v = 0\\
+    &\implies \frac{dv}{v} = \frac{dx}{1-x}\\
+    &\implies \ln|v| = -\ln|1-x| + C\\
+    &\implies y' = v = \frac{C_1}{1-x},
+  \end{align}
+  so
+  \begin{align}
+    y(x) &= \int \frac{C_1}{1-x}dx\\
+    &= -C_1\ln(1-x) + C_2\\
+    &= C_1y_1(x) + C_2y_2(x)
+  \end{align}
+  where
+  \begin{equation}
+    \begin{cases}
+      y_1 = -\ln(1-x) = \sum_{n=1}^\infty\frac{x^n}{n},\\
+      y_2 = 1.
+    \end{cases}
+  \end{equation}
+  By the ratio test, $R_1 = 1$ (the radius of convergence of $-\ln(1-x)$), and $R_2 = \infty$ because $y_2$ is constant. So both radii of convergence are $\geq 1$, as predicted.
+
+  \underline{Example 2:} Consider
+  \begin{equation}
+    (1+3x^2)y'' - xy' + 4y = 0.
+  \end{equation}
+  $P(x) \neq 0$ when $x = 0$, which motivates taking $x_0 = 0$ again. We use the theorem to get a lower bound on the radius of convergence of power series solutions around $x_0$.
+
+  First we find the zeros of $P(x) = 1 + 3x^2$. Setting $P(z) = 0$ implies $z^2 = -1/3$, so the zeros of $P$ are $z = \pm i/\sqrt{3}$. The theorem tells us that we can find power series solutions
+  \begin{align}
+    y(x) = \sum_{n=0}^\infty a_n(x-x_0)^n
+  \end{align}
+  with radius of convergence $R \geq \min|z-x_0| = \min\{|i/\sqrt{3} - 0|,|-i/\sqrt{3} - 0|\} = 1/\sqrt{3}$. Remember that this means the series converges for all $|x-x_0| < R$, i.e. when the \emph{strict} inequality holds. The radius of convergence says nothing about what happens when $|x-x_0| = R$ (whether the series converges absolutely, or whether it converges at all).
+
+  \underline{Example 3:} We have a differential equation
+  \begin{equation}
+    y'' + xy' + 2y = 0
+  \end{equation}
+  with \emph{initial conditions}
+  \begin{equation}
+    y(0) = 1 \quad\quad y'(0) = -2.
+  \end{equation}
+  The theorem will give us a trick to determine some useful information about the solutions without finding them explicitly.
+
+  Suppose $\phi(x)$ is a solution. Our task is to find $\phi''(0)$ and $\phi'''(0)$, because this will determine the second and third coefficients $a_2,a_3$ in the power series solution, and we already have the first two coefficients (by Taylor's formula (why?) the initial conditions give us $a_1 = 1$ and $a_2 = -2$).
+
+  Let's see how this bootstrapping process to find the coefficients of $\phi$ works. First, we isolate the highest order term to get $\phi''(0)$ (which will give us $a_2$).
+  \begin{align}
+    y'' &= -xy' - 2y\\
+    \implies \phi''(0) &= -0\phi'(0)- \phi(0) = -1.
+  \end{align}
+  With this information in hand, we can do the same for $\phi'''(0)$:
+  \begin{align}
+    y''' &= -y' - xy'' - 2y' = -xy'' - 3y'\\
+    \implies \phi'''(0) &= -0\phi''(0) - 3\phi'(0) = 0 - (3)(-2) = 6.
+  \end{align}
+  In this special example, we did not need $\phi''(0)$ to determine $\phi'''(0)$, but you will notice that in general we may need the lower order derivatives to get the next one. This is why this process is sometimes known as \textbf{bootstrapping}.
+
+\item Euler's equation (aka the Cauchy-Euler equation), is given for constants $a_0$, $a_1$, $a_2$ by
+  \begin{align}
+    a_2x^2\frac{d^2y}{dx^2} + a_1\frac{dy}{dx} + a_0y = 0,\quad\quad
+    \implies P(x) = a_2x^2,\quad P(0) = 0.
+  \end{align}
+  This equation is an example of a general situation that we are going to study. This situation is when we have a second-order linear homogeneous ODE
+  \begin{equation}
+    P(x)y'' + Q(x)y' + R(x)y = 0
+  \end{equation}
+  where $x_0$ is a \textbf{singular point} (i.e. it is not an ordinary point, $P(x_0) = 0$), but it is a \textbf{regular} singular point.
 
 \end{enumerate}
 
