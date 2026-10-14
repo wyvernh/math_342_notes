@@ -545,6 +545,8 @@ We will make the following assumption.
 
   As a final remark, we can imagine expanding the solution around some other point $x_0 \neq 0$. If we do this, we get faster convergence around the new $x_0$, which is important for numerical applications. In addition, we can imagine situations in which $R < \infty$, in which case it would be necessary to find power series solutions around a collection of points; these solutions can in some cases be ``patched together'' to get a solution on a larger domain than just $[-R,R]$.
 
+  \newpage
+
 \item \underline{Theorem:} Consider the second order homogeneous ODE with variable coeffients
   \begin{equation}
     P(x)y'' + Q(x)y' + R(x)y = 0
@@ -614,7 +616,7 @@ We will make the following assumption.
   \end{equation}
   The theorem will give us a trick to determine some useful information about the solutions without finding them explicitly.
 
-  Suppose $\phi(x)$ is a solution. Our task is to find $\phi''(0)$ and $\phi'''(0)$, because this will determine the second and third coefficients $a_2,a_3$ in the power series solution, and we already have the first two coefficients (by Taylor's formula (why?) the initial conditions give us $a_1 = 1$ and $a_2 = -2$).
+  Suppose $\phi(x)$ is a solution. Our task is to find $\phi''(0)$ and $\phi'''(0)$, because this will determine the second and third coefficients $a_2,a_3$ in the power series solution, and we already have the first two coefficients (by Taylor's formula (why?) the initial conditions give us $a_0 = 1$ and $a_1 = -2$).
 
   Let's see how this bootstrapping process to find the coefficients of $\phi$ works. First, we isolate the highest order term to get $\phi''(0)$ (which will give us $a_2$).
   \begin{align}
@@ -626,11 +628,11 @@ We will make the following assumption.
     y''' &= -y' - xy'' - 2y' = -xy'' - 3y'\\
     \implies \phi'''(0) &= -0\phi''(0) - 3\phi'(0) = 0 - (3)(-2) = 6.
   \end{align}
-  In this special example, we did not need $\phi''(0)$ to determine $\phi'''(0)$, but you will notice that in general we may need the lower order derivatives to get the next one. This is why this process is sometimes known as \textbf{bootstrapping}.
+  In this special example, we did not need $\phi''(0)$ to determine $\phi'''(0)$, but you will notice that in general we may need the lower order derivatives to get the next one. This is why this process is sometimes known as bootstrapping.
 
 \item Euler's equation (aka the Cauchy-Euler equation), is given for constants $a_0$, $a_1$, $a_2$ by
   \begin{align}
-    a_2x^2\frac{d^2y}{dx^2} + a_1\frac{dy}{dx} + a_0y = 0,\quad\quad
+    a_2x^2\frac{d^2y}{dx^2} + a_1x^1\frac{dy}{dx} + a_0x^0y = 0,\quad(a_2 \neq 0)\quad\quad
     \implies P(x) = a_2x^2,\quad P(0) = 0.
   \end{align}
   This equation is an example of a general situation that we are going to study. This situation is when we have a second-order linear homogeneous ODE
@@ -638,6 +640,130 @@ We will make the following assumption.
     P(x)y'' + Q(x)y' + R(x)y = 0
   \end{equation}
   where $x_0$ is a \textbf{singular point} (i.e. it is not an ordinary point, $P(x_0) = 0$), but it is a \textbf{regular} singular point.
+
+  By dividing by $a_2x^2$, we can assume without loss of generality that we are dealing with the equation
+  \begin{equation}
+    \frac{d^2y}{dx^2} + \frac{a_1}{x}\frac{dy}{dx} + \frac{a_0}{x^2}y = 0
+  \end{equation}
+  in standard form (both equations have the same solutions).
+
+\item Classification of singular points.
+
+  \underline{Regular singular point}
+
+  We say $x_0$ is a \textbf{regular singular point} of a differential equation in standard form ($y'' + p(x)y' + q(x)y = 0$) if both limits
+  \begin{equation}
+    \lim_{x\to x_0}(x-x_0)p(x), \quad \lim_{x\to x_0}(x-x_0)^2q(x)
+  \end{equation}
+  exist in $\RR$ (in other words, they are finite). This definition may remind you of the notion of a \emph{removable singular point} from complex function theory.
+
+  For example, in Euler's equation we have $p(x) = a_1/x$ and $q(x) = a_0/x^2$, $x_0  = 0$. In this case $\lim_{x\to x_0}(x-x_0)p(x) = a_1$ and $\lim_{x\to x_0}(x-x_0)^2q(x) = a_0$.
+
+  However, Euler's equation can be easily solved with methods from second year calculus. Our first real motivation for studying singular points will come from \textbf{Bessel's equation}. This is the equation
+  \begin{equation}
+    y'' + \frac{1}{x}y' + \frac{x^2-\nu^2}{x^2}y = 0
+  \end{equation}
+  where $\nu$ is a parameter. Bessel's equation also has a regular singular point at zero, and is much less tractable than Euler's equation with our current tools.
+
+  \medskip
+
+  \underline{Irregular singular point}
+
+  If either of the limits above does not exist or blows up to $\infty$ or $-\infty$, then $x_0$ is called an \textbf{irregular singular point}.
+
+  \medskip
+
+  \underline{Example:} Solve the Euler equation
+  \begin{equation}
+    x^2\frac{d^2y}{dx^2} - 2x\frac{dy}{dx} - 4y = 0
+  \end{equation}
+  The idea behind Euler equations is the following observation. Notice that if we set $x = e^t$, then
+  \begin{equation}
+    x\frac{dy}{dx} = \frac{dx}{dt}\frac{dy}{dx} = \frac{dy}{dt}.
+  \end{equation}
+  This is a great simplification of the linear term in our differential equation! But what about the second order term? With a little more calculus, we find
+  \begin{equation}
+    x^2\frac{d^2y}{dx^2} = \frac{d^2y}{dt^2} - \frac{dy}{dt}
+  \end{equation}
+  This is fanastic, because it turns Euler's equation into a constant coefficient equation, which we know how to solve:
+  \begin{equation}
+    \left(\frac{d^2y}{dt^2} - \frac{dy}{dt}\right) - 2\frac{dy}{dt} - 4y = 0.
+  \end{equation}
+  This is the motivation for setting $x = e^t$.
+
+  The rest of the solution is familiar; we find the characteristic polynomial $\tilde p(z) = z^2 - 3z - 4 = (z-4)(z+1)$, with roots $z = 4$ and $z = -1$. So we can write the general solution
+  \begin{equation}
+    y = C_1e^{4t}+C_2e^{-t}.
+  \end{equation}
+  But the original equation was not written in terms of $t$. Substituting back in $x = e^t$, we obtain the final solution in terms of $x$:
+  \begin{equation}
+    y(x) = C_1x^4+C_2x^{-1}.
+  \end{equation}
+
+\item More about singular points.
+
+  We will do a few examples on how to find and classify singular points.
+
+  \underline{Example:} Find the singular points of the following equation and classify them.
+  \begin{equation}
+    2x^2(1-x)y'' + 3xy' + (5-x)y = 0
+  \end{equation}
+  First we write down the coefficient polynomial $P(x) = 2x^2(1-x)$, and divide out to get
+  \begin{equation}
+    y'' + \frac{3x}{2x^2(1-x)}y' + \frac{5-x}{2x^2(1-x)}y = 0
+  \end{equation}
+  in standard form. The singular points are the zeros of $P$, which are $x_0 = 0$ and $x_0 = 1$.
+
+  For $x_0 = 0$,
+  \begin{align}
+    \lim_{x\to x_0}(x-x_0)p(x) &= \lim_{x\to 0} x\frac{3x}{2x^2(1-x)} = \frac{3}{2} \in \RR\\
+    \lim_{x\to x_0}(x-x_0)^2q(x) &= \lim_{x\to 0} x^2\frac{5-x}{2x^2(1-x)} = \frac{5}{2} \in \RR
+  \end{align}
+  both exist, so $x_0 = 0$ is a \underline{regular singular point.}
+
+  For $x_0 = 1$,
+  \begin{align}
+    \lim_{x\to x_0}(x-x_0)p(x) &= \lim_{x\to 1} (x-1)\frac{3x}{2x^2(1-x)} = \lim_{x\to 1} \frac{-3}{2x} = -\frac{3}{2} \in \RR\\
+    \lim_{x\to x_0}(x-x_0)^2q(x) &= \lim_{x\to 1} (x-1)^2\frac{5-x}{2x^2(1-x)} = \lim_{x\to 1} (1-x)\frac{5-x}{2x^2} = 0 \in \RR
+  \end{align}
+  so $x_0 = 1$ is also a regular singular point.
+
+  \underline{Setting for the general case:}
+  \begin{equation}\label{eq:general-second-order-homo}
+    y'' + p(x)y' + q(x)y = 0, \quad\quad x\neq x_0,
+  \end{equation}
+  where $x_0$ is a regular singular point.
+
+  We can do a clever manipulation (due to Frobenius) to make this equation look like Euler's equation. Multiplying by $x^2$, we get
+  \begin{equation}
+    x^2y'' + x[xp(x)]y' + [x^2q(x)]y = 0.
+  \end{equation}
+  We have suggestively factored the terms so that the coefficients of $y$ and $y'$ are exactly the functions we know the limit of as $x \to x_0$. (Look at the definition of a regular singular point). Since the limits exist, these coefficients
+  \begin{equation}
+    xp(x),\quad\quad\quad x^2q(x)
+  \end{equation}
+  are analytic functions, and they have power series
+  \begin{align}
+    xp(x) &= p_0 + p_1x + p_2x^2 + p_3x^3 + \dots\\
+    x^2q(x) &= q_0 + q_1x + q_2x^2 + q_3x^3 + \dots
+  \end{align}
+  If we let $\hat p(x) = xp(x)$ and $\hat q(x) = x^2q(x)$, then our differential equation becomes
+  \begin{align}
+    x^2y'' + x\hat p(x)y' + \hat q(x)y = 0.
+  \end{align}
+  When $x$ is very close to $x_0$, $\hat p(x) \approx p_0$ and $\hat q(x) \approx q_0$, and we see that this equation is very nearly the same as the Euler equation
+  \begin{align}
+    x^2y'' + xp_0y' + q_0y = 0.
+  \end{align}
+  So what can we do with this? Since the differential equations are similar, we might imagine their solutions are also similar (and we already know the solutions to the Euler's equation). Assuming no repeated roots, the solutions to Euler's equation are just linear combinations of monomials. This line of thinking eventually leads to an ansatz for our original equation.
+
+  \underline{Frobenius ansatz:} Solutions to (\ref{eq:general-second-order-homo}) (assuming no repeated roots in the associated characteristic polynomial) are of the form
+  \begin{equation}
+    y = x^r \text{ plus ``something}
+  \end{equation}
+
+
+
 
 \end{enumerate}
 
