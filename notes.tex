@@ -753,17 +753,96 @@ We will make the following assumption.
   \end{align}
   When $x$ is very close to $x_0$, $\hat p(x) \approx p_0$ and $\hat q(x) \approx q_0$, and we see that this equation is very nearly the same as the Euler equation
   \begin{align}
-    x^2y'' + xp_0y' + q_0y = 0.
+    x^2y'' + xp_0y' + q_0y = 0,
   \end{align}
+  known as the \textbf{Euler counterpart} to the original equation.
+
   So what can we do with this? Since the differential equations are similar, we might imagine their solutions are also similar (and we already know the solutions to the Euler's equation). Assuming no repeated roots, the solutions to Euler's equation are just linear combinations of monomials. This line of thinking eventually leads to an ansatz for our original equation.
 
   \underline{Frobenius ansatz:} Solutions to (\ref{eq:general-second-order-homo}) (assuming no repeated roots in the associated characteristic polynomial) are of the form
   \begin{equation}
-    y = x^r \text{ plus ``something}
+    y = x^r \quad\text{plus ``something''}
   \end{equation}
 
+\item On the Euler counterpart and the Frobenius ansatz.
 
+  The Euler counterpart to (\label{eq:general-second-order-homo}) is
+  \begin{equation}
+    x^2y'' + xp_0 y' + q_0y = 0,
+  \end{equation}
+  where $xp(x) = p_0 + p_1x + p_2x^2 + \dots$ and $x^2q(x) = q_0 + q_1x + q_2x^2 + \dots$
 
+  Recall the general solution strategy for Euler's equation is making the substitution $x = e^t$, where one recovers the solutions $e^{rt} (= x^r)$, $r$ being a root of the characteristic polynomial of the constant coefficient equation in $t$ that Euler's equation reduces to. If characteristic polynomial has repeated roots, the second solution is given by $te^{rt} (= (\ln|x|)x^r)$. We will use this to formulate the Frobenius ansatz.
+
+  \underline{Idea:} Let's just work with the $x^r$ solution (to the Euler counterpart) for now. The $(\ln|x|)x^r$ solution will come into play later.
+
+  We come up with a candidate solution
+  \begin{equation}\label{eq:frobenius-solution-formulation}
+    y(x) = x^r\left(\sum_{n=0}^\infty a_nx^n\right)
+    = \sum_{n=0}^\infty a_nx^{n+r},
+  \end{equation}
+  which takes the approximate solution $x^r$ and perturbes it by an analytic function that we solve for. Note that (\ref{eq:frobenius-solution-formulation}) is not in general a power series, because $r$ might not be an integer (or it might be negative)!
+
+  \underline{Example:} Solve
+  \begin{equation}\label{eq:example-frobenius-equation}
+    2x^2y'' + 3xy' - (x+1)y = 0.
+  \end{equation}
+  In standard form, the equation is
+  \begin{equation}
+    y'' + \frac{3x}{2x^2}y' - \frac{x+1}{2x^2}y = 0.
+  \end{equation}
+  Is zero a regular point? Checking the two limits,
+  \begin{align}
+    \lim_{x\to0}xp(x) &= \lim_{x\to 0}x\frac{3x}{2x^2}\quad\text{ exists}\\
+    \lim_{x\to0}x^2q(x) &= \lim_{x\to 0}x^2\frac{x+1}{2x^2}\quad\text{ exists}
+  \end{align}
+  so $x_0 = 0$ is a regular singular point. We need that it is regular for the Frobenius ansatz to apply.
+
+  Our ansatz is
+  \begin{equation}
+    y(x) = \sum_{n=0}^\infty a_nx^{n+r}.
+  \end{equation}
+  We may assume $a_0 \neq 0$, for otherwise we could just shift $r$ by one (r and $a_k$ are undetermined coefficients), and get
+  \begin{align}
+    y(x) &= \sum_{n=1}^\infty a_nx^{n+r}\\
+    &= \sum_{n=0}^\infty a_{n+1}x^{n+1+r}\\
+    &= \sum_{n=0}^\infty b_nx^{n+1+r}.
+  \end{align}
+  You may then say ``well, why can't $b_0 = 0$?'' If $b_0 = 0$, then we repeat this process again and you might complain ``but now we could have $c_0 = 0$!''. But if we repeat this process for long enough, eventually one of the coefficients must be nonzero, otherwise they would all be zero and we would have the absurdity $y \equiv 0$!
+
+  With that out of the way, we can assume $a_0 \neq 0$ and solve for all the coefficients. First of all, we have
+  \begin{align}
+    y(x) &= \sum_{n=0}^\infty a_nx^{r+n}\quad\quad(a_0 \neq 0)\\
+    \implies y'(x) &= \sum_{n=0}^\infty a_n(r_n)x^{r+n-1}\\
+    \implies y''(x) &= \sum_{n=0}^\infty a_n(r+n)(r+n-1)x^{r+n-2}
+  \end{align}
+  Applying these formulas to (\ref{eq:example-frobenius-equation}), we have
+  \begin{align}
+    0 &= 2x^2\sum_{n=0}^\infty a_n(r+n)(r+n-1)x^{r+n-2} + 3x\sum_{n=0}^\infty a_n(r+n)x^{r+n-1}
+    - (x+1)\sum_{n=0}^\infty a_nx^{r+n}\\
+    &= \sum_{n=0}^\infty a_n(r+n)(r+n-1)2x^{r+n} + \sum_{n=0}^\infty a_n(r+n)3x^{r+n}
+    - \sum_{n=0}^\infty a_nx^{r+n+1} - \sum_{n=0}^\infty a_nx^{r+n+1}.
+  \end{align}
+  Rearranging and collecting terms (and using index shifting), we get
+  \begin{align}
+    0 &= \sum_{n=0}^\infty a_n\left(2(r+n)(r+n-1) + 3(r+n) - 1\right)x^{r+n}
+    - \sum_{k=1}^\infty a_{k-1}x^{r+k}\\
+    &= (2r(r-1) + 3r - 1)a_0x^r + \sum_{n=1}^\infty \left[a_n\left(2(r+n)(r+n-1) + 3(r+n) - 1\right) - a_{n-1}\right]x^{r+n}\\
+    &= (2r(r-1) + 3r - 1)a_0x^r + \sum_{n=1}^\infty \left[\left(2(r+n)(r+n-1) + 3(r+n) - 1\right)a_n - a_{n-1}\right]x^{r+n}\\
+    &= (2r^2 + r - 1)a_0x^r + \sum_{n=1}^\infty \left[\left(2(r+n)^2 + (r+n) - 1\right)a_n - a_{n-1}\right]x^{r+n}
+  \end{align}
+  where we have used $k = n+1$. This implies that all the coefficients of the $x^m$ are zero, which gives us the recurrence equation
+  \begin{align}
+    0 &= \left(2(r+n)^2 + (r+n) - 1\right)a_n - a_{n-1}\\
+    \implies a_n &= \frac{a_{n-1}}{2(r+n)^2 + (r+n) - 1}
+  \end{align}
+  as well as the equation from the $x^r$ term:
+  \begin{equation}\label{eq:r-equation-frob}
+    2r^2 + r - 1 = 0
+  \end{equation}
+  since $a_0 \neq 0$. Notice that $a_0$ is left as a free variable; it will become a coefficient in the general solution (remember we have not imposed any initial conditions thus far).
+
+  \underline{Remark} The equation (\ref{eq:r-equation-frob}) for the $r$ parameter turns out to be precisely the \emph{characteristic equation for the Euler counterpart}. This fact is a general feature of this technique of Frobenius.
 
 \end{enumerate}
 
