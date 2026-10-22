@@ -764,9 +764,17 @@ We will make the following assumption.
     y = x^r \quad\text{plus ``something''}
   \end{equation}
 
+\end{enumerate}
+
+\subsection{The method of Frobenius}
+
+In this section we will make a synthesis of the theory of the previous section to present a general solution strategy for homogeneous ODE with polynomial coefficients.
+
+\begin{enumerate}
+
 \item On the Euler counterpart and the Frobenius ansatz.
 
-  The Euler counterpart to (\label{eq:general-second-order-homo}) is
+  The Euler counterpart of (\ref{eq:general-second-order-homo}) is
   \begin{equation}
     x^2y'' + xp_0 y' + q_0y = 0,
   \end{equation}
@@ -840,9 +848,125 @@ We will make the following assumption.
   \begin{equation}\label{eq:r-equation-frob}
     2r^2 + r - 1 = 0
   \end{equation}
-  since $a_0 \neq 0$. Notice that $a_0$ is left as a free variable; it will become a coefficient in the general solution (remember we have not imposed any initial conditions thus far).
+  since $a_0 \neq 0$. This is the famous \textbf{indicial equation} of Frobenius. Notice that $a_0$ is left as a free variable; it will become a coefficient in the general solution (remember we have not imposed any initial conditions thus far).
 
-  \underline{Remark} The equation (\ref{eq:r-equation-frob}) for the $r$ parameter turns out to be precisely the \emph{characteristic equation for the Euler counterpart}. This fact is a general feature of this technique of Frobenius.
+  \underline{Remark} The indicial equation (\ref{eq:r-equation-frob}) turns out to be precisely the \emph{characteristic equation for the Euler counterpart}. This fact is a general feature of this technique of Frobenius.
+
+\item Summary on obtaining the indicial equation.
+
+  Start with the differential equation
+  \begin{equation}
+    P(x)y'' + Q(x)y' + R(x)y = 0
+  \end{equation}
+  and formulate its Euler counterpart
+  \begin{equation}
+    x^2y'' + p_0xy' + q_0y = 0.
+  \end{equation}
+  Then apply the trial solution $y = x^r$ in the Euler counterpart, and you will get a polynomial equation in $r$. This is the indicial equation, and it corresponds to the characteristic equation of the Euler counterpart after substituting $x = e^t$ and rewriting it as a constant coefficient equation in terms of $t$.
+
+  For instance, if the original equation is
+  \begin{equation}
+    2x^2y'' +3xy' - (1+x)y = 0
+  \end{equation}
+  as in our previous example, then the Euler counterpart is
+  \begin{equation}
+    2x^2y'' + 3xy' - y = 0
+  \end{equation}
+  (factors of $2$ don't matter).
+  Trying $y(x) = x^r$ gives
+  \begin{equation}
+    (2r(r-1) + 3r - 1)x^r = 0
+  \end{equation}
+  and so the indicial equation is
+  \begin{equation}
+    2r^2 + r - 1 = (2r - 1)(r+1) = 0.
+  \end{equation}
+
+\item Using the indicial equation to find the general solution.
+
+  Let's finish off our example. The roots of the indicial equation $r_1 = 1/2$, $r_2 = -1$ give us two possible solutions with the Frobenius ansatz, namely
+  \begin{align}
+    y_1(x) &= x^{1/2}\sum_{n=0}^\infty \alpha_nx^n\\
+    y_2(x) &= x^{-1}\sum_{n=0}^\infty \beta_nx^n
+  \end{align}
+  Where $\alpha_n$ and $\beta_n$ are found by plugging into the original differential equation, but by assumption $\alpha_0 \neq 0$ and $\beta_0 \neq 0$. I claim $y_1$ and $y_2$ are linearly independent.
+
+  To prove this, we need to show that the only solution to $c_1y_1(x) + c_2y_2(x) = 0$ that holds for all $x$ is $c_1 = c_2 = 0$. But
+  \begin{align}
+    c_1 y_1(x) + c_2y_2(x) &= 0\\
+    \implies c_1x^{1/2}\sum_{n=0}^\infty\alpha_nx^n + c_2x^{-1}\sum_{n=0}^\infty\beta_nx^n &= 0\\
+    \implies c_1x^{3/2}\sum_{n=0}^\infty\alpha_nx^n + c_2\sum_{n=0}^\infty\beta_nx^n &= 0.\label{eq:proving-linear-indep-in-frob}
+  \end{align}
+  Taking the limit as $x\to 0$ in the last equation, the only term that survives is $c_2\beta_0$. Since $\beta_0 \neq 0$, we must have $c_2 = 0$. But then plugging $c_2 = 0$ back into the equation, we have
+  \begin{equation}\\
+    c_1x^{3/2}\sum_{n=0}^\infty\alpha_nx^n = c_1(\alpha_0x^{3/2} + \alpha_1x^{5/2} + \dots) = 0
+  \end{equation}
+  As usual for power series, all of the terms of this series must be zero! (One way to think about it is that they are all linearly independent functions, so if a linear combination of them adds up to zero then all the coefficients must be zero.) Since $\alpha_0 \neq 0$, just looking at the first term of this series we can conclude that $c_1\alpha_0 = 0\implies c_1 = 0$ as well. We have been forced to conclude $c_1 = c_2 = 0$ as desired, so we are done. The two solutions we get from Frobenius are linearly independent.
+
+  If you look at the argument we just made, you will see that in the general case, in place of (\ref{eq:proving-linear-indep-in-frob}) we will get
+  \begin{align}
+    c_1x^{r_1 - r_2}\sum_{n=0}^\infty\alpha_nx^n + c_2\sum_{n=0}^\infty\beta_nx^n = 0.
+  \end{align}
+  (by our choice of naming $r_1$ and $r_2$, we can assume without loss of generality that $r_1 - r_2 > 0$; the case $r_1 = r_2$, i.e. when the indicial equation has only one root, is another thing altogether that we will come back to in a future section). Again we send $x\to 0$ and obtain $c_2 = 0$ and consequently $c_1 = 0$. But here we have to be extremely careful about our assumptions. We assumed that the two Frobenius ansatz solutions $y_1$ and $y_2$ exist, \emph{with the first coefficient nonzero.} It may be that the recurrence relations one derives to determine the coefficients of $y_1$ and $y_2$ only have solutions when the $\alpha_0 = 0$ or $\beta_0 = 0$, violating our hypothesis.
+
+  The moral of the story is that we have to settle for something weaker. The true result is that whenever $r_1 - r_2$ is \emph{not an integer}, then $y_1$ and $y_2$ as constructed from the Frobenius ansatz will be linearly independent (even if the differential equation forces $\alpha_0 = 0$ or $\beta_0 = 0$). We will revisit this result soon.
+
+\item \underline{Summary of The General Result}
+
+  We started with the problem of obtaining solutions to
+  \begin{equation}
+    P(x)y'' + Q(x)y' + R(x)y = 0
+  \end{equation}
+  by using power series around a \emph{regular singular point} $x_0 = 0$.
+
+  First we converted the equation into standard form and multiplied by $x^2$:
+  \begin{equation}
+    x^2y'' + x(xp(x))y' + x^2q(x)y = 0
+  \end{equation}
+  where $p(x) = Q(x)/P(x)$ and $q(x) = R(x)/P(x)$.
+  We expanded $xp(x)$ and $x^2q(x)$ as power series around $x_0$:
+  \begin{align*}
+    xp(x) &= p_0 + p_1x + p_2x^2 + \dots\\
+    x^2q(x) &= q_0 + q_1x + q_2x^2 + \dots
+  \end{align*}
+  which gives us an Euler equation that is kind of a first approximation to the original equation, called the Euler counterpart:
+  \begin{equation}
+    x^2y'' + p_0xy' + q_0y = 0.
+  \end{equation}
+
+  Motivated by the form of solutions to the Euler counterpart, we introduced the Frobenius ansatz
+  \begin{equation}
+    y(x,r) = \sum_{n=0}^\infty a_n(r)x^{n+r},\quad\quad
+    a_0(r) \neq 0
+  \end{equation}
+  (we can even assume $a_0(r) = 1$). Plugging the ansatz into the differential equation gives a consistency equation for $r$, the indicial equation
+  \begin{equation}
+    F(r) := r(r-1) + p_0 r + q_0 = 0
+  \end{equation}
+  ($F(r)$ is called the \textbf{indicial polynomial}). The roots of the indicial polynomial $r_1,r_2$ index two linearly independent solutions
+  \begin{align}
+    y_1(x) &= y(x,r_1) = \sum_{n=0}^\infty a_n(r_1)x^{n+r_1},\\
+    y_2(x) &= y(x,r_2) = \sum_{n=0}^\infty a_n(r_2)x^{n+r_2}
+  \end{align}
+  \emph{provided $r_1 - r_2$ is not an integer}. $a_n(r_1)$ and $a_n(r_2)$ are just the undetermined coefficients we called $\alpha_n$ and $\beta_n$ earlier.
+
+  This is what we had. And it works when $F(r)$ has two distinct roots. But what if it only has one root? This is a problem we will extend our method to solve in the future. Before we do that, we will elaborate on the other special case where the above fails; when $r_1 - r_2$ is an integer.
+
+  \medskip
+
+\item Suppose $r_1-r_2$ is an integer, say $r_1 - r_2 = -N \in \ZZ$. (The negative sign is for convenience later.)
+
+  We show that $y_1$ and $y_2$ are not in general linearly independent. We have that $c_1y_1 + c_2y_2 = 0$ takes the following form:
+  \begin{equation}
+    c_1\sum_{n=0}^\infty \alpha_n x^{r+n} + c_2 \sum_{n=N}^\infty\beta_n'x^{r+n} = 0
+  \end{equation}
+  where we have set $r = r_1$, and $\beta_n' = \beta_{n - N}$. Assume $N \geq 0$. We can rewrite the above as
+  \begin{equation}\label{eq:failure-to-be-lin-indep-frob}
+    c_1\sum_{n=0}^{N-1}\alpha_nx^{r+n} + \sum_{n=N}^\infty (c_1\alpha_n + c_2\beta_n')x^{r+n} = 0
+  \end{equation}
+  Now it is clear that as long as $\alpha_0 = \alpha_1 = \dots = \alpha_{N-1} = 0$, it can be the case that $c_1$ and $c_2$ are both nonzero and the $\alpha_n$ and $\beta_n'$ terms simply cancel out. Since we cannot conclude $c_1 = c_2 = 0$, we cannot conclude that $y_1$ and $y_2$ are linearly independent (and in general they need not be).
+
+  This failure to give linearly independent solutions does have a resolution, but it requires more advanced theory that we will not get into at the present moment. Remember, though, that at least $y_1$ and $y_2$ are linearly independent whenever $r_1 - r_2$ is not an integer. Hopefully you can see that in this case, the two sums cannot be ``overlapped'' as in (\ref{eq:failure-to-be-lin-indep-frob}). No power of $x$ has coefficients in both $y_1$ and $y_2$, so the coefficients can never cancel each other out as we just imagined, and the solutions are therefore always linearly independent for $r_1 - r_2 \notin \ZZ$.
 
 \end{enumerate}
 
