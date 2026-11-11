@@ -24,6 +24,8 @@
 \usepackage{colortbl}
 %SetFonts
 
+\numberwithin{equation}{subsection}
+
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \numberwithin{theorem}{section}
@@ -47,7 +49,6 @@
 \newtheorem*{sol}{Solution}
 \newtheorem{exer}[theorem]{Exercise}
 \newtheorem{exerset}[theorem]{Exercise Set}
-
 
 %%%
 %%% These are just a bunch of shorthand commands I like to define to make my life easier
@@ -77,7 +78,7 @@
 
 \maketitle
 
-\section{First Order Vector-Valued ODE}
+\section{First Order Vector-Valued ODE}\label{sec:first-order}
 
 \subsection{Repeated eigenvalues}
 
@@ -967,6 +968,694 @@ In this section we will make a synthesis of the theory of the previous section t
   Now it is clear that as long as $\alpha_0 = \alpha_1 = \dots = \alpha_{N-1} = 0$, it can be the case that $c_1$ and $c_2$ are both nonzero and the $\alpha_n$ and $\beta_n'$ terms simply cancel out. Since we cannot conclude $c_1 = c_2 = 0$, we cannot conclude that $y_1$ and $y_2$ are linearly independent (and in general they need not be).
 
   This failure to give linearly independent solutions does have a resolution, but it requires more advanced theory that we will not get into at the present moment. Remember, though, that at least $y_1$ and $y_2$ are linearly independent whenever $r_1 - r_2$ is not an integer. Hopefully you can see that in this case, the two sums cannot be ``overlapped'' as in (\ref{eq:failure-to-be-lin-indep-frob}). No power of $x$ has coefficients in both $y_1$ and $y_2$, so the coefficients can never cancel each other out as we just imagined, and the solutions are therefore always linearly independent for $r_1 - r_2 \notin \ZZ$.
+
+\end{enumerate}
+
+\section{Qualitative Methods}
+
+\subsection{Some vocabulary}
+
+We are going to start our study of qualitative methods by considering the idea of critical points. We have a system of ODE
+\begin{equation}\label{eq:simple-constant-linear-homogeneous}
+  \dot x = Ax\quad\quad
+  A \in M_{2\times2}(\RR),\quad
+  x = x(t)
+\end{equation}
+Consider all the times $t^*$ such that the velocity at $t^*$ is zero: $\dot x(t^*) = 0$. A \textbf{critical point} is the value $x^* = x(t^*)$ of the position at any of the ``critical'' times $t^*$. An \textbf{equilibrium solution} is a solution of the form $x(t) \equiv x^*$ for some critical point $x^*$. Clearly all the constant solutions are of this form, because constancy means $\dot x(t) = 0$.
+
+\underline{Example:} The system of ODE
+\begin{equation}
+  \begin{cases}
+    \dot x_1 = -x_1\\
+    \dot x_2 = -2x_2
+  \end{cases}
+\end{equation}
+has the critical point $x_1 = x_2 = 0$, so $x(t) = [0, 0]^T$ is an equilibrium solution.
+
+\underline{Observation:} $A 0 = 0$ means $0$ is always a critical point to (\ref{eq:simple-constant-linear-homogeneous}).
+
+In our study we will have to consider various cases depending on the eigenvalues of $A$. The possible situations are
+\begin{enumerate}
+\item Real, distinct eigenvalues of the same sign
+\item Real, distinct eigenvalues of opposite sign
+\item Equal (only one eigenvalue)
+\item Complex $\alpha \pm i\beta$ ($\alpha \neq 0$, $\beta > 0$)
+\item Complex $\pm i\beta$ ($\beta > 0$)
+\end{enumerate}
+
+\noindent
+\underline{Case 1 (same sign):} We can write $A = P\Lambda P^{-1}$, where $p = [\xi^1, \xi^2]$ and $\Lambda = \text{diag}(\lambda_1, \lambda_2)$. The general solution to (\ref{eq:simple-constant-linear-homogeneous}) is
+\begin{equation}\label{eq:general-solution-nodal-source}
+  x(t) = c_1e^{\lambda_1t}\xi^1 + c_2e^{\lambda_2t}\xi^2.
+\end{equation}
+
+Drawing the direction field of (\ref{eq:simple-constant-linear-homogeneous}) shows that if $\lambda_1\neq0, \,\lambda_2\neq0$ then the \emph{only} equilibrium point is the origin. (Why?) In particular, if the eigenvalues are both positive, all trajectories flow away from the origin. In this case we say that the origin is a \textbf{nodal source}.
+
+If both eigenvalues are negative we still have the general solution (\ref{eq:general-solution-nodal-source}), but now all solution curves are attracted to the origin. The origin is then called a \textbf{nodal sink}.
+
+\noindent
+\underline{Case 2 (opposite sign):} Suppose without loss of generality $\lambda_1 < 0 < \lambda_2$. Then the general solution is still
+\begin{equation}\label{eq:general-solution-opposite-sign}
+  x(t) = c_1e^{\lambda_1t}\xi^1 + c_2e^{\lambda_2t}\xi^2,
+\end{equation}
+but the behaviour is a bit different. Drawing the direction field shows that along the line $s\xi^1,\,s\in\RR$ the solution curves are attracted to the origin, but along the line spanned by $\xi^2$ the solution curves diverge. By drawing some more general solution curves, one finds that \emph{any} curve that starts off of the $s\xi^1,\,s\in\RR$ line eventually diverges to infinity, while the curves that start on that line follow it to the origin. This is unstable behaviour, and the origin is called a \textbf{saddle point}.
+
+\noindent
+\underline{Case 3 (equal eigenvalues):} Recall from linear algebra that if two eigenvectors $\xi^1$ and $\xi^2$ correspond to different eigenvalues, they are guaranteed to be linearly independent. Here the situation is a little more subtle. Let's suppose first that $\xi^1$ and $\xi^2$ are linearly independent eigenvectors corresponding to the one unique eigenvalue $\lambda$. The general solution is
+\begin{align}
+  x(t) &= c_1e^{\lambda t}\xi^1 + c_2e^{\lambda t}\xi^2\\
+  &= e^{\lambda t}(c_1 \xi^1 + c_2\xi^2)
+  &= e^{\lambda t}x(0).
+\end{align}
+Notice that \emph{all} starting points $x(0)$ are eigenvalues of $A$. If we draw the direction field, we see that the solution curves are all straight lines through the origin. We call the origin a \textbf{star node}.
+
+If there do \emph{not} exist two linearly independent eigenvectors $\xi^1,\,\xi^2$, then we just have one eigenvalue $\xi$. When we solved this problem back in \S\ref{sec:first-order}, we found the solution
+\begin{equation}
+  x(t) = c_1e^{\lambda t}\xi + c_2e^{\lambda t}(\xi t + \eta)
+\end{equation}
+where $\eta$ was called the \emph{generalised eigenvector}, and satisfies
+\begin{equation}
+  \xi = (A - \lambda I)\eta
+\end{equation}
+The solutions are no longer just exponentials, but involve a linear polynomial times an exponential. Since $\eta \neq \xi$, the solution curves are
+
+(1) straight lines if and only if $c_2 = 0$;
+
+(2) $x(t) \sim c_2 te^{\lambda t} \xi$ as $t\to\pm\infty$ whenever $c_2 \neq 0$ (the linear part of $t\xi + \eta$ dominates)
+
+In this case the origin is called a \textbf{degenerate node} or \textbf{improper node}. If $\lambda < 0$, it is a \textbf{degenerate sink}; if $\lambda > 0$ it is a \textbf{degenerate source}.
+
+\bigskip
+
+\noindent
+\underline{Case 4 ($\lambda = \alpha \pm i\beta$, $\alpha \neq 0$, $\beta > 0$):} The eigen\emph{vectors} look like $\xi = p + iq$, where $p$ and $q$ are real vectors. For a given eigenvalue $\lambda$, the other eigenvalue is $\bar\lambda$. Similarly, taking the complex conjugate of $A\xi = \lambda \xi$ shows that the other eigenvector is $\bar\xi$ (remember that $A$ is real). Then the complex general solution to (\ref{eq:simple-constant-linear-homogeneous}) is
+\begin{align}
+  x(t) &= c_1e^{\lambda t}\xi + c_2e^{\bar\lambda t}\bar\xi\\
+  &= c_1e^{\alpha t + i\beta t}(p + iq) + c_2e^{\alpha t - i\beta t}(p - iq)
+\end{align}
+Since we know a real trajectory will remain real under (\ref{eq:simple-constant-linear-homogeneous}), taking real and imaginary parts give the real general solutions
+\begin{align}
+  x(t) &= (c_1 + c_2)e^{\alpha t}(p\cos(\beta t) - q\sin(\beta t))
+  + (c_1 - c_2)e^{\alpha t}(p\sin(\beta t) + q\cos(\beta t))\\
+  &=: c_1'e^{\alpha t}(p\cos(\beta t) - q\sin(\beta t))
+  + c_2'e^{\alpha t}(p\sin(\beta t) + q\cos(\beta t))
+\end{align}
+(remember $p$ and $q$ are vectors). Going back to the equations
+\begin{align}\label{second-order-expanded-system}
+  \dot x_1 &= a_{11}x_1 + a_{22}x_2\\
+  \dot x_2 &= a_{21}x_1 + a_{12}x_2
+\end{align}
+(just the expanded form of $\dot x_1 = Ax$), it is useful for the qualitative analysis to use polar coordinates
+\begin{equation}
+  \begin{cases}
+    x_1 = r\cos\theta\\
+    x_2 = r\sin\theta
+  \end{cases}
+\end{equation}
+where $r = r(t)$ and $\theta = \theta(t)$ are functions of $t$. Plugging these equations into (\ref{second-order-expanded-system}) gives an equation for $r$.
+
+\underline{Equation for $r$}
+\begin{equation}
+  r^2 = x_1^2 + x_2^2
+\end{equation}
+\begin{equation}
+  2r\frac{dr}{dt} = 2x_1\frac{dx_1}{dt} + 2x_2\frac{dx_2}{dt}
+\end{equation}
+which implies
+\begin{align}
+  \frac{dr}{dt} &= \frac{x_1}{r}\frac{dx_1}{dt} + \frac{x_2}{r}\frac{dx_2}{dt}\\
+  &= \frac{x_1}{r}(a_{11}x_1 + a_{12}x_2) + \frac{x_2}{r}(a_{21}x_1 + a_{22}x_2)\\\label{eq:polar-expansion-for-r}
+  &= r\cos\theta(a_{11}\cos\theta + a_{12}\sin\theta) + r\sin\theta(a_{21}\cos\theta + a_{22}\sin\theta).
+\end{align}
+To simplify this complicated expression, we can now we use the change of coordinates given by
+\begin{equation}
+  P^{-1}AP =
+  \begin{pmatrix}
+    \alpha & -\beta\\
+    \beta & \alpha
+  \end{pmatrix}
+\end{equation}
+for some nonsingular matrix $P$. Specifically, our original system $\dot x = Ax$ becomes
+\begin{equation}
+  P^{-1}\dot x = (P^{-1}AP)P^{-1}x
+\end{equation}
+or
+\begin{equation}
+  \dot y = (P^{-1}AP)y,
+\end{equation}
+where $y = P^{-1}x$.
+This means we can assume without loss of generality $A$ is of the form
+\begin{equation}
+  A =
+  \begin{pmatrix}
+    \alpha & -\beta\\
+    \beta & \alpha
+  \end{pmatrix},
+\end{equation}
+and then multiply on the left by $P$ when we are done. By the symmetry of this \textbf{canonical form} of $A$, (\ref{eq:polar-expansion-for-r}) becomes
+\begin{equation}
+  \frac{dr}{dt} = \alpha r\cos^2\theta + \alpha r\sin^2\theta
+\end{equation}
+gives the final equation for $r$:
+\begin{equation}
+  \frac{dr}{dt} = \alpha r.
+\end{equation}
+
+\underline{Equation for $\theta$}
+If
+\begin{equation}
+  A =
+  \begin{pmatrix}
+    \alpha & -\beta\\
+    \beta & \alpha
+  \end{pmatrix},
+\end{equation}
+then
+\begin{equation}
+  \frac{d\theta}{dt} = \beta
+\end{equation}
+
+\underline{Summary} (Under the canonical form):
+\begin{equation}
+  r(t) = r(0)e^{\alpha t},\quad\quad\theta(t)=\theta(0) + \beta t
+\end{equation}
+\begin{equation}
+  x_1(t) = r(0)e^{\alpha t}\cos(\theta(0) + \beta t),\quad\quad
+  x_2(t) = r(0)e^{\alpha t}\sin(\theta(0) + \beta t),\quad\quad
+\end{equation}
+
+The origin is an \textbf{asymptotically stable spiral point} if $\alpha < 0$ and an \textbf{unstable spiral source} if $\alpha > 0$.
+
+\bigskip
+
+\noindent
+\underline{Case 5 ($\lambda = \pm i\beta$, $\beta> 0$):}
+In this case the matrix $A$ has a canonical form
+\begin{equation}
+  A =
+  \begin{pmatrix}
+    0 & -\beta\\
+    \beta & 0
+  \end{pmatrix}
+\end{equation}
+The solutions are the same as for Case 4, except there is no divergence from the origin (the origin is no longer a source or a sink) and the trajectories are all circles around origin. In particular, no solution will converge to a point or diverge to infinity. In this case, the origin is called a \textbf{center}.
+
+\underline{If $A$ is not in canonical form already...} Recall that we set $y = P^{-1}x$, so $x = Py$. Under this transformation back to the original coordinates, the solution curves may not exactly be circles, but the overall behaviour is the same. To see this, look at the radius $R^2 = x^T x = y^T P^TP y$. Expanding out into coordinates shows that this is in general the equation for an \emph{ellipse.}
+
+\bigskip
+
+\subsection{General setup}
+
+In this section we will consider a general first order autonomous system
+\begin{equation}\label{eq:first-order-autonomous}
+  \dot x = f(x).
+\end{equation}
+In general, $f$ may be nonlinear.
+
+We have already introduced the notions of \emph{critical points} $x_0$ where $f(x_0) = 0$, and the corresponding \emph{equilibrium solutions} $x(t) \equiv x_0$.
+
+\begin{enumerate}
+\item Example (oscillating pendulum):
+
+  From physics, the equation of motion for a simple pendulum with damping is
+  \begin{equation}\label{eq:oscillating-pendulum-eq-of-motion}
+    mL^2\frac{d^2\theta}{dt^2} = -cL\frac{d\theta}{dt} - mgL\sin\theta
+  \end{equation}
+  Rewriting the equation in standard form, and replacing some of the constants with $\gamma$ and $\omega$, we obtain the equation
+  \begin{equation}
+    \frac{d^2\theta}{dt^2} = -\gamma\frac{d\theta}{dt} - \omega^2\sin\theta.
+  \end{equation}
+  To turn this into a first order system, we make the definitions $x = 0$, $\ds y = \frac{d\theta}{dt}$, which allows us to write down
+  \begin{equation}\label{eq:oscillating-pendulum-first-order-system}
+    \begin{cases}
+      \frac{dx}{dt} = y\\
+      \frac{dy}{dt} = -\gamma y - \omega^2\sin x
+    \end{cases}
+  \end{equation}
+  Notice that this system is nonlinear, because of the $-\omega^2\sin x$ term.
+
+  \underline{Find critical points.} Setting the right hand side of (\ref{eq:oscillating-pendulum-first-order-system}) to zero gives us the equations $y = 0$ and $\sin x = 0$. So the critical points are
+  \begin{equation}\label{eq:oscillating-pendulum-crit-points}
+    (x,y) = (n\pi,0)\quad n \in \ZZ
+  \end{equation}
+
+  Now we think about stability. Consider the $(x,y) = (0,0)$ critical point / equilibrium solution. Thinking about the physics of the pendulum (this is the stationary solution where the pendulum is hanging straight down), it is easy to see that this is a stable critical point. An even stronger property holds, which we will define in a minute; $(0,0)$ is going to be an \textbf{asymptotically stable critical point}.
+
+  Similarly, thinking about $x = \pi$ (the pendulum is upside down), we have that $(x,y)=(\pi,0)$ is an unstable critical point. (And notice that all critical points are one of these two cases, since $\theta$ is $2\pi$ periodic.)
+
+  \medskip
+
+\item Stable and asymptotically stable critical points.
+
+  A stable critical point is a point $x_0$ where if we perturb the initial condition $x(0) \approx x_0$, the solution $x(t)$ remains close to the equilibrium solution $x(t) \approx x_0$ for all $t$.
+
+  The other case is the \textbf{asymptotically stable critical point}. $x_0$ is said to by asymptotically stable if the solutions $x(t)$ just considered do not merely remain close to $x_0$ but actually converge:
+  \begin{equation}
+    x(0) \approx x_0 \implies \lim_{t\to\infty}x(t) = x_0
+  \end{equation}
+
+  Asymptotically stable implies stable, but the converse is not true in general.
+
+  \medskip
+
+\item Basins of attraction.
+
+  We are looking at the collection of all initial points for which the solution curves converge to a given asymptotically stable point. Formally, if $x_0$ is an asymptotically stable point, then its \textbf{basin of attraction} is the set
+  \begin{equation}\label{eq:basin-of-attraction}
+    \left\{ x(0) \in \RR^2 \big| \lim_{t\to\infty}x(t) = x_0\right\}.
+  \end{equation}
+  For example, if the eigenvalues of $A$ are real and negative, then $(0,0)$ is a nodal sink of $\dot x = Ax$, and has a basin of attraction $\RR^2$. More generally, if $\Re(\lambda) < 0$ for each eigenvalues $\lambda$, then the origin is a spiral sink and again $\text{Basin} = \RR^2$.
+
+  \underline{Example (nonlinear example)} Consider the system
+  \begin{equation}
+    \begin{cases}
+      \dot x = -x\\
+      \dot y = y - y^3
+    \end{cases},
+    \quad\quad\quad (x,y) \in \RR^2.
+  \end{equation}
+  We want to find the critical points and the associated basins of attraction. To obtain the critical points, we set the right hand side to zero:
+  \begin{equation}
+    \begin{cases}
+      -x = 0\\
+      y - y^3 = 0
+    \end{cases}
+    \implies E_1 = (0,0),\quad E_2 = (0,1),\quad E_3 = (0, -1)
+  \end{equation}
+  ($E_1,E_2,E_3$ are the critical points).
+
+  To find the basins of attraction, we need to analyse the origin equations. We have
+  \begin{equation}
+    \dot x = -x \implies x(t) = x(0)e^{-t}
+  \end{equation}
+  and the equation $\dot y = y(1-y^2)$. Looking at a (one dimensional) phase diagram for $\dot y$, we have that $y = 0$ is an unstable source, and $y = \pm 1$ are asymptotically stable sinks. Since $x(t) \to 0$ as $t \to \infty$, we have that $E_1$ is not stable (so it does not have a basin) but $E_2$ and $E_3$ are asymptotically stable.
+
+  For $E_2 = (0,1)$, any initial $x$ will give a solution converging to $x = 0$. But for $y$, the phase diagram in $y$-space shows that for convergence to $y = 1$, we must have $y(0) > 0$ (otherwise $y(t)$ will either sit at $y = 0$ or converge to $y = -1$). So its basin is $\{ (x,y) \in \RR^2 | y > 0\}$.
+
+  For $E_3 = (0,-1)$, we must have $y(0) < 0$ for convergence, and so its basin is $\{(x,y)\in \RR^2 | y < 0\}$.
+
+  Notice that there is a line $\{ (x,0) | x \in \RR\} \subset \RR^2$ that belongs to neither basin of attraction, but separates the two basins. This line is called the \textbf{separatrix}.
+
+  \medskip
+
+  \underline{Example} (Two linearly independent vectors but only one eigenvalue.)
+
+  Consider
+  \begin{equation}
+    \dot x = P
+    \begin{pmatrix}
+      \lambda & 0\\
+      0 & \lambda
+    \end{pmatrix}
+    P^{-1} x.
+  \end{equation}
+  In order to work with the diagonal system, we should change coordinates $y = P^{-1}x$. Now we can just work with
+  \begin{equation}
+    \dot y =
+    \begin{pmatrix}
+      \lambda & 0\\
+      0 & \lambda
+    \end{pmatrix}
+    y.
+  \end{equation}
+  This decouples the system, so that it suffices to consider (using $y = [x_1,x_2]^T$)
+  \begin{equation}
+    \begin{cases}
+      \frac{dx_1}{dt} = \lambda x_1\\
+      \frac{dx_1}{dt} = \lambda x_1
+    \end{cases}
+    \implies\quad
+    \frac{dx_2}{dx_1} = \frac{dx_2/dt}{dx_1/dt}
+    = \frac{\lambda x_2}{\lambda x_1}
+    = \frac{x_2}{x_1}.
+  \end{equation}
+
+  More generally,
+  \begin{equation}
+    \begin{cases}
+      \frac{dx_1}{dt} = F(x_1,x_2)\\
+      \frac{dx_1}{dt} = G(x_1,x_2)
+    \end{cases}
+    \implies\quad
+    \frac{dx_2}{dx_1} = \frac{dx_2/dt}{dx_1/dt}
+    = \frac{G(x_1,x_2)}{F(x_1,x_2)}.
+  \end{equation}
+  We have come up with a new differential equation independent of time parameter (so we can forget about it). Generally, we can solve this equation using methods from basic ODE theory (e.g. it's often separable, like in the special case above). We get solutions of the form $H(x_1,x_2) = c$. For example, in the special case $F/G = x_2 / (-x_1)$, we have $-x_2dx_2 = x_1dx_1$, and integrating both sides we get $x_1^2 + x_2^2 = c$. (The solutions are circles.) On the other hand, the matrix that generates this system is
+  \begin{equation}
+    A =
+    \begin{pmatrix}
+      0 & -1\\
+      1 & 0
+    \end{pmatrix},
+  \end{equation}
+  and we saw the circular solution curves for this system before.
+
+  \medskip
+
+\item General setting.
+
+  We can write a generic first order system of two dimensions as
+  \begin{equation}\label{eq:general-first-order-system}
+    \begin{cases}
+      \frac{dx}{dt} = F(x,y)\\
+      \frac{dy}{dt} = G(x,y)
+    \end{cases}
+  \end{equation}
+  where $F$ and $G$ are arbitrary functions of $x$ and $y$. In order to apply our framework for the analysis of critical points, we will make two basic assumptions.
+
+  \underline{Assumption 1:} $(x_0,y_0)$ is a critical point of (\ref{eq:general-first-order-system})
+
+  \underline{Assumption 2:} $F$ and $G$ are continuously differentiable, or \emph{of class} $C^1$, in a neighbourhood of $(x_0,y_0)$.
+
+  The purpose of Assumption 2 is to allow us to use Taylor's approximation theorem (or in this case, just the definition of the derivative of a multivariate function) to write
+  \begin{align}
+    F(x,y) &= F(x_0,y_0) + F_x(x_0,y_0)(x-x_0) + F_y(x_0,y_0)(y-y_0) + \eta_1(x-x_0,y-y_0)\\
+    G(x,y) &= G(x_0,y_0) + G_x(x_0,y_0)(x-x_0) + G_y(x_0,y_0)(y-y_0) + \eta_2(x-x_0,y-y_0)
+  \end{align}
+  where subscripts denote partial derivatives, and the error term $\eta = (\eta_1,\eta_2)$ satisfies the bound
+  \begin{equation}
+    \lim_{(x,y)\to(x_0,y_0)}\frac{|\eta(x-x_0,y-y_0)|}{|(x,y)-(x_0,y_0)|} = 0.
+  \end{equation}
+  These expressions in turn motivate the introduction of some new variables $u = x-x_0$, $v = y-y_0$, and $w = (u,v)$.
+
+  We can then rewrite the system (\ref{eq:general-first-order-system}) in the following form:
+  \begin{equation}
+    \begin{pmatrix}
+      \frac{dx}{dt} \\ \frac{dy}{dt}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      \frac{du}{dt} \\ \frac{dv}{dt}
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      F_x & F_y\\
+      G_x & G_y
+    \end{pmatrix}
+    \begin{pmatrix}
+      u \\ v
+    \end{pmatrix}
+    +
+    \begin{pmatrix}
+      \eta_1(w) \\ \eta_2(w)
+    \end{pmatrix}
+  \end{equation}
+  with $\eta = (\eta_1,\eta_2)$ satisfying
+  \begin{equation}
+    \lim_{w\to 0}\frac{|\eta(w)|}{|w|} = 0
+  \end{equation}
+  In this form we can recognise the matrix as simply the Jacobian $J(x,y)$ of the coordinate transformation $(x,y)\mapsto (F,G)$.
+
+\medskip
+
+\item Locally linear systems.
+
+  We say that we have a \textbf{locally linear system} if the Jacobian is invertible ($\det J(x_0,y_0) \neq 0$). The \underline{key point} of this definition is that it ensures $(x_0,y_0)$ is an isolated critical point. To see where this can fail, consider the following example.
+
+  \underline{Example (Bad case):}
+  \begin{equation}
+    \begin{cases}
+      x' = x^2\\
+      y' = 0
+    \end{cases}
+  \end{equation}
+  Setting the right hand side to zero, we find that the set of critical points is just the $y$-axis $\{(0,y)|y \in \RR\}$. When we compute the Jacobian:
+  \begin{equation}
+    J(x,y) =
+    \begin{pmatrix}
+      2x & 0\\
+      0 & 0
+    \end{pmatrix}
+  \end{equation}
+  we see that $J(0,0) = 0$ and so the system is not locally linear around $(x_0,y_0) = (0,0)$. In this case, the failure of the invertibility of the Jacobian comes from the fact that the origin is not an isolated critical point.
+
+  \medskip
+  The reason we want isolated singularities is so that we can use the following.\\
+  \underline{Fact:} Stability results from the corresponding linear system
+  \begin{equation}
+    \begin{pmatrix}
+      \dot u \\ \dot v
+    \end{pmatrix}
+    =
+    J(x_0,y_0)
+    \begin{pmatrix}
+      u \\ v
+    \end{pmatrix}
+  \end{equation}
+  carry over to the locally linear system
+  \begin{equation}
+    \begin{pmatrix}
+      \dot x \\ \dot v
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      F(x,y) \\ G(x,y)
+    \end{pmatrix}
+  \end{equation}
+  except for the case where the eigenvalues are purely imaginary. To see why the purely imaginary case is special, let's look at some special cases.
+
+  \underline{Example ($\lambda = \pm i\beta$)}\\
+  1.
+  \begin{equation}
+    \begin{cases}
+      x' = y\\
+      y' = -x
+    \end{cases}
+    \implies\quad
+    A =
+    \begin{pmatrix}
+      0 & 1\\
+      -1 & 0
+    \end{pmatrix}
+  \end{equation}
+  The characteristic polynomial of $A$ is $\lambda^2 + 1$, so its eigenvalues are $\lambda = \pm i$. As we have seen before, the origin is a stable but not asymptotically stable critical point (it is a centre).
+
+  2.
+  \begin{equation}
+    \begin{cases}
+      x' = y - x(x^2 + y^2)\\
+      y' = -x - y(x^2 + y^2)
+    \end{cases}
+  \end{equation}
+  The origin is still a critical point, and the Jacobian is
+  \begin{equation}
+    J(x,y) =
+    \begin{pmatrix}
+      -3x^2 - y^2 & 1 - 2xy\\
+      -1-2xy & -x^2-3y^2
+    \end{pmatrix}.
+  \end{equation}
+  At the origin, the Jacobian is precisely $A$: $J(0,0)  = A$. So the \emph{linearised} system is the one presented just above.
+
+  However, the behaviour of (2) is not fully captured by the linearised system. To see this, we move to polar coordinates. Differentiating $r^2 = x^2 + y^2$ with respect to $t$, we get
+  \begin{equation}
+    \begin{split}
+      2r\frac{dr}{dt} &= 2x\frac{dx}{dt} + 2y\frac{dy}{dt}\\
+      &= 2x(y - x(x^2+y^2)) + 2y(-x-y(x^2+y^2))\\
+      &= -2(x^2+y^2)^2\\
+      &= -2r^4.
+    \end{split}
+  \end{equation}
+  This means $\ds\frac{dr}{dt} = -r^3 < 0$ for all $r$, so every solution curve converges to the origin $r=0$! Unlike in its linearised version, the origin is an asymptotically stable point of (2).
+
+  Now let's consider the very closely related\\
+  3.
+  \begin{equation*}
+    \begin{cases}
+      x' = y + x(x^2+y^2)\\
+      y' = -x + y(x^2+y^2)
+    \end{cases}.
+  \end{equation*}
+  Again it is easy to see that the corresponding linear system is given by (1) above (all we did was flip the sign of the nonlinear terms). However, this system displays even more disparate behaviour. By the same analysis as above, we find that $\ds\frac{dr}{dt} = r^3 > 0$ for all $r$, and hence the nonzero solution curves all diverge to infinity. In this case, the origin as an unstable source.
+
+  The message to take away from this example is while the behaviour of linearised systems generally carries over to that of the nonlinear system, it tells one absolutely nothing if the critical point is a centre of the linear system (the coefficient matrix has purely imaginary eigenvalues).
+
+  \medskip
+
+\item Example: analysis of critical points using $J(x,y)$.
+
+  Consider the system
+  \begin{equation}\label{eq:crit-pt-jacobian-system}
+    \begin{cases}
+      \frac{dx}{dt} = y\\
+      \frac{dy}{dt} = -x+x^3
+    \end{cases}.
+  \end{equation}
+
+  \underline{Step 1:} Find critical points.
+
+  Setting the right hand side to zero, we have that all critical points satisfy $y = 0$ and hence $x(1-x^2) = 0$. This gives us the three critical points
+  \begin{equation}
+    P_1 = (0,0), \quad\quad
+    P_2 = (0,1), \quad\quad
+    P_3 = (0,-1).
+  \end{equation}
+
+  \underline{Step 2:} Calculate $J(x,y)$.
+
+  Differentiating the right hand side of (\ref{eq:crit-pt-jacobian-system}) with respect to the various variables, we get
+  \begin{equation}
+    J(x,y) =
+    \begin{pmatrix}
+      0 & 1\\
+      -1+3x^2 & 0
+    \end{pmatrix}.
+  \end{equation}
+
+  \underline{Step 3:} Evaluate $J$ at the various critical points and analyse the behaviour of the corresponding linear systems.
+
+  For the first critical point, we have
+  \begin{equation}
+    J(P_1) =
+    \begin{pmatrix}
+      0 & 1\\
+      -1 & 0
+    \end{pmatrix}.
+  \end{equation}
+  We have seen already that the eigenvalues of $J(P_1)$ are purely imaginary, so we sadly cannot conclude anything about the behaviour of the nonlinear system around $P_1$.
+
+  For the second critical point, we have
+  \begin{equation}
+    J(P_2) =
+    \begin{pmatrix}
+      0 & 1\\
+      2 & 0
+    \end{pmatrix}.
+  \end{equation}
+  The characteristic polynomial of $J(P_2)$ is $\lambda^2 - 2$, and so the matrix has eigenvalues $\lambda = \pm\sqrt{2}$. By our theory of the classification of critical points of linear systems, we conclude that the linearised system has $P_2$ as an unstable saddle point. Since the general system is locally linear ($J$ is invertible at $P_2$), and the eigenvalues are not purely imaginary, $P_2$ is an unstable saddle point for the original system as well.
+
+  Finally, the third critical point has $J(P_3) = J(P_2)$, so $P_3$ is also an unstable saddle point.
+
+  \bigskip
+
+\end{enumerate}
+
+\subsection{Lyapunov method}
+
+The Lyapunov method is a way of classifying critical points with the use of a distinguished real-valued function of $x$ and $y$, known as the Lyapunov function. The inspiration for the Lyapunov function comes from certain properties of the total energy function in classical mechanics systems (like the mass-spring system) that make it useful for the classification of critical points. In general, a Lyapunov function will be chosen specifically for the system at hand, and there is no general formula to produce a suitable function.
+
+\begin{enumerate}
+
+\item \underline{Example:} Consider the mass-spring system
+  \begin{equation}
+    m\ddot  + c\dot x + kx = 0
+  \end{equation}
+  \begin{equation}
+    \implies \begin{cases}
+      \dot x = y\\
+      \dot y = - \frac{k}{m}x - \frac{c}{m}y
+    \end{cases},
+  \end{equation}
+  where $y = \dot x$.
+  The total mechanical energy is given by
+  \begin{align}
+    V(x,y) &= KE + PE\\
+    &= \frac{1}{2}m\dot x^2 + \int_0^x(-F_{\text{spring}}(x_1))dx_1\\
+    &= \frac{1}{2}my^2 + \int_0^xkx_1dx_1\\
+    &= \frac{m}{2}y^2 + \frac{k}{2}x^2.
+  \end{align}
+  The function $V(x,y)$, in dynamical systems, is called a \textbf{Lyapunov function}. Notice that $V$ is nonnegative everywhere, and is strictly positive away from the origin:
+  \begin{equation}
+    V(0,0) = 0,\quad\quad\quad
+    V(x,y) > 0 \forall (x,y) \neq (0,0).
+  \end{equation}
+  Remembering that $y = \dot x$, we see that $(0,0)$ is an equilibrium point; the mass does not move after being placed at $x = 0$.
+
+\item More generally, the Lyapunov function gives us what is known as a zeroth order test for critical points of general systems.
+
+  Assume
+  \begin{equation}
+    \begin{cases}
+      \dot x = F(x,y)\\
+      \dot y = G(x,y)
+    \end{cases},
+    \quad\quad F(0,0) = G(0,0) = 0.
+  \end{equation}
+  Then $(0,0)$ is a critical point. We also assume that there exists a (differentiable) function $V(x,y)$ such that $V(0,0) = 0$.
+
+  There are four possible conditions on the function $V$:
+  \begin{enumerate}
+  \item $V$ is said to be \textbf{positive definite} if $$V(x,y) > 0\text{ for all }(x,y) \neq (0,0);$$
+  \item $V$ is said to be \textbf{positive semidefinite} if $$V(x,y) \geq 0\text{ for all }(x,y) \neq (0,0);$$
+  \item $V$ is said to be \textbf{negative definite} if $$V(x,y) < 0\text{ for all }(x,y) \neq (0,0);$$
+  \item $V$ is said to be \textbf{negative semidefinite} if $$V(x,y) \leq 0\text{ for all }(x,y) \neq (0,0);$$
+  \end{enumerate}
+
+  $V$ is said to provide a zeroth order test if it is positive definite. In this situation, we can conclude that $(0,0)$ is stable.
+
+  If $V$ is positive \emph{semidefinite}, we get a first order test. To see what this means, let $(x(t),y(t))$ be a solution curve. We then have
+  \begin{equation}
+    \frac{d}{dt} V(x(t),y(t))
+    = V_x\frac{dx}{dt} + V_y\frac{dy}{dt}
+    = V_xF(x,y) + V_yG(x,y).
+  \end{equation}
+  This calculation motives the definition
+  \begin{equation}
+    \dot V(x,y) := V_x(x,y)F(x,y) + V_y(x,y)G(x,y).
+  \end{equation}
+  We have a pair of functions $(V,\dot V)$. $V$ tells us if we have a stable critical point, and the sign of $\dot V$ (the first order test) tells us if it is a source or a sink. This is made precise by the following theorem.
+
+  \medskip
+
+\item \underline{Theorem.} Suppose $(0,0)$ is an isolated critical point, an furthermore that the following conditions hold:
+  \begin{enumerate}
+  \item $V$ is positive definite;
+  \item $\dot V$ is negative semidefinite.
+  \end{enumerate}
+  Then $(0,0)$ is stable. Moreover if $\dot V$ is negative definite, we can conclude that $(0,0)$ is asymptotically stable.
+
+  \underline{Example (mass-spring system, continued):}
+  \begin{equation}
+    \begin{cases}
+      (0,0) = \text{critical point},\\
+      V(x,y) = \frac{1}{2}my^2 + \frac{1}{2}kx^2.
+    \end{cases}
+  \end{equation}
+  Then
+  \begin{equation}
+    \dot V(x,y) = V_x\dot x + V_y\dot y
+    = kxy + my\left(-\frac{k}{m}x - \frac{c}{m}y\right)
+    = -cy^2 \leq 0,
+  \end{equation}
+  so $\dot V$ negative semidefinite. However, it is not negative definite (because there are nonzero $(x,y)$ with $y=0$).
+  By the theorem, $(0,0)$ is stable, but we cannot say whether or not it is asymptotically stable.
+
+  \medskip
+
+\item \underline{Question:} What is $V$, in general?
+
+  This is the trouble of applying Lyapunov's method; we need to find an appropriate $V$ for our system. There are no formulas to tell us what choice to make. Here is a function you can try, that usually works for simple systems: $$V(x,y) = ax^2 + bxy + cy^2\quad\quad \text{ (positive definite if $a>0$ and $4ac-b^2>0$)}.$$
+
+  \underline{Example}
+  \begin{equation}
+    \begin{cases}
+      \dot x = -x-2y\\
+      \dot y = 2x-y^3
+    \end{cases}
+  \end{equation}
+  We try the second order homogeneous quadratic form of $V$, to analyse the critical point $(0,0)$. Keeping the coefficients of $V$ generic, we compute
+  \begin{equation}
+    \begin{split}
+      \dot V &= \frac{\partial V}{\partial x}\dot x + \frac{\partial V}{\partial y}\dot y\\
+      &= (2ax + by)(-x-2y) + (bx + 2cy)(2x-y^3)\\
+      &= (-2a + b)x^2 + (-4a - 2b + 4c)xy - bxy^3 - 2cy^4.
+    \end{split}
+  \end{equation}
+  We want to make this negative (semi-)definite. Looking at this generic $\dot V$, we recognise that the $x^2$ and and $y^4$ terms are ``safe'' so long as $c \geq 0$ and $-2a + b \leq 0$, and ideally we would try to get these terms strictly negative. We can kill the ``problematic'' $xy$ and $xy^3$ terms if we set $b = 0$ and $a = c$.\footnote{These terms are problematic because $xy$ and $y^3$ are themselves not positive or negative definite. Instead they have a saddle/inflection point at the origin, so they make it hard for $\dot V$ to be nonpositive everywhere.}
+
+  Moreover, if we make $a = c$ positive, we get the most we could ask for, because now $x^2$ and $y^4$ have the right sign and force $\dot V$ to be negative definite:
+  \begin{equation}
+    \dot V \propto -x^2 - y^4.
+  \end{equation}
+  If we choose $a = c = 1$, then
+  \begin{equation}
+    V(x,y) = x^2 + y^2
+  \end{equation}
+  is positive definite and
+  \begin{equation}
+    \dot V(x,y) = -2x^2 -2y^2
+  \end{equation}
+  is negative definite, and we can conclude that $(0,0)$ is an asymptotically stable saddle point.
 
 \end{enumerate}
 
