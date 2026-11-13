@@ -1597,12 +1597,15 @@ The Lyapunov method is a way of classifying critical points with the use of a di
 
   \medskip
 
-\item \underline{Theorem.} Suppose $(0,0)$ is an isolated critical point, an furthermore that the following conditions hold:
+\item \underline{Stability Theorem.} Suppose $(0,0)$ is an isolated critical point, an furthermore that the following conditions hold:
   \begin{enumerate}
+  \item $V(0,0) = 0$;
   \item $V$ is positive definite;
   \item $\dot V$ is negative semidefinite.
   \end{enumerate}
   Then $(0,0)$ is stable. Moreover if $\dot V$ is negative definite, we can conclude that $(0,0)$ is asymptotically stable.
+
+  Notice that $\dot V(0,0) = 0$ follows from the positive definiteness of $V$ (which means $(0,0)$ is a local minimum of $V$).
 
   \underline{Example (mass-spring system, continued):}
   \begin{equation}
@@ -1655,7 +1658,176 @@ The Lyapunov method is a way of classifying critical points with the use of a di
   \begin{equation}
     \dot V(x,y) = -2x^2 -2y^2
   \end{equation}
-  is negative definite, and we can conclude that $(0,0)$ is an asymptotically stable saddle point.
+  is negative definite, and we can conclude by the Stability Theoem that $(0,0)$ is an asymptotically stable saddle point.
+
+  \medskip
+
+\item \underline{Instability Theorem.} Suppose $(0,0)$ is an isolated critical point and the following conditions hold:
+  \begin{enumerate}
+  \item $V(0,0) = 0$;
+  \item $V$ is weakly positive definite: there exists a sequence $(x_n,y_n)$ converging to zero such that $V(x_n),y_n) > 0$ for all $n$;
+  \item $\dot V$ is positive definite.
+  \end{enumerate}
+  Then $(0,0)$ is unstable.
+
+  The instability theorem is clearly complementary to the stability theorem, and covers some (but not all) of the cases where the stability theorem fails. Thus the stability/instability theorems give a partial characterisation of the stability of critical points.
+
+  \underline{Example:} Consider the system
+  \begin{equation}
+    \begin{cases}
+      \dot x = x\\
+      \dot y = -y
+    \end{cases}
+  \end{equation}
+  with the Lyapunov function
+  \begin{equation}
+    V(x,y) = x^2 - y^2.
+  \end{equation}
+  Now, $V(x,y)$ is not positive definite, and cannot be coerced into satisfying the conditions of the stability theorem. However, $V$ is weakly positive definite, since it is positive on $(x_n,y_n) = (1/n,0)$. We compute
+  \begin{equation}
+    \dot V = (2x)(x) + (-2y)(-y)
+    = 2(x^2+y^2),
+  \end{equation}
+  so $\dot V$ is positive definite. By the instability theorem, we conclude that the origin is an unstable critical point.
+
+  Notice how $V$ was chosen. It is inspired by the parabolic $V$ we used for the mass-spring system, but with the sign of the $y^2$ flipped. This choice was made so that the signs of its partial derivatives cancel out the signs of $\dot x$ and $\dot y$.
+
+\end{enumerate}
+
+\medskip
+
+\subsection{Periodic solutions and limit cycles}
+
+\begin{enumerate}
+\item \underline{Motivation} Consider, as an example, the harmonic oscillator from classical mechanics. This system is described by the equation of motion
+  \begin{equation}
+    \ddot x = \frac{k}{m}x = 0,
+  \end{equation}
+  and is the special case of the mass-spring system with $c = 0$. Absorbing the constants $k$ and $m$ into a single constant $\omega_0^2 = \sqrt{k}{m}$, we have
+  \begin{equation}
+    \ddot x = \omega_0^2x = 0.
+  \end{equation}
+  Going back to our study of second order systems, we recognize the characteristic polynomial
+  \begin{equation}
+    p(z) = z^2 + \omega_0^2 \quad\implies\quad
+    \text{roots are }\pm\omega_0 i,
+  \end{equation}
+  so the general solution is
+  \begin{equation}
+    x(t) = c_1\sin(\omega_0 t) + c_2\cos(\omega_0 t).
+  \end{equation}
+
+  Looking at the phase space plot of the solution curves, we see that the origin is a centre.
+
+  But alternatively, we can reduce the equation to a first order system
+  \begin{equation}
+    \begin{cases}
+      \dot y = -\omega_0^2x\\
+      \dot x = y
+    \end{cases},
+  \end{equation}
+  from which the analysis developed in the preceding sections produces the same result.
+
+  It is a result from physics that almost everything is very nearly a harmonic oscillator most of the time. In math, this is kind of idea is made formal by our linear approximation results for locally linear systems. But we want to go beyond talking about stability of equilibrium solutions; we want to capture the notion of a stable periodic solution (which will in simple examples look like the solution curves of the harmonic oscillator). As an extension of the notion of asymptotic stability, we will want to study systems where the solution curves ``approach'' the kind of elliptic or periodic nature of the harmonic oscillator trajectory.
+
+  \medskip
+
+\item \underline{General Setting}
+
+  We will have a first order system
+  \begin{equation}
+    \begin{cases}
+      \dot x = F(x,y)\\
+      \dot y = G(x,y)
+    \end{cases}
+  \end{equation}
+
+  We make the following definitions.
+
+  \underline{Definitions.} Let $\vec x(t) = (x(t),y(t))$. If $\vec x(T + t) = \vec x(t)$ for some $T$ and for all $t\in \RR$, then $\vec x$ is called a \textbf{periodic solution}. The smallest such positive real number $T$ is called the \textbf{period} of the solution. Notice that the solution curves of periodic solutions are all closed curves (and include, for example, all solutions to the harmonic oscillator).
+
+  \medskip
+
+\item \underline{Example (a linear system).}
+  \begin{equation}
+    \begin{cases}
+      \dot x = 2x-y\\
+      \dot y = x + 2y
+    \end{cases}
+    \quad\quad
+    \begin{pmatrix}
+      \dot x \\ \dot y
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      2 & -1\\
+      1 & 2
+    \end{pmatrix}
+    \begin{pmatrix}
+      x \\ y
+    \end{pmatrix}.
+  \end{equation}
+  The characteristic polynomial of the matrix is $\lambda^2 - 4\lambda + 5$, so the eigenvalues are $\lambda = 2\pm2i$. Notice:
+  \begin{enumerate}
+  \item The positivity of the real part of $\lambda$ causes the solutions to ``blow up'': $(0,0)$ is an unstable equilibrium solution;
+  \item The nonzero imaginary part causes the solutions to circulate around the origin, so we find that the origin is a spiral source.
+  \end{enumerate}
+
+  \medskip
+
+\item \underline{Example (a locally linear system).}
+
+  We consider a locally linear system that reduces to the above system in the linear approximation:
+  \begin{equation}
+    \begin{cases}
+      \dot x = 2x-y - x(x^2 + y^2)\\
+      \dot y = x+2y - y(x^2 + y^2)
+    \end{cases}
+  \end{equation}
+  We have already solved the linear behaviour of this system, so let's analyse the global behaviour. The $x^2 + y^2$ showing up everywhere on the RHS motivates switching to polar coordinates.
+
+  1. \underline{Radial dynamics}\\
+  We first derive and study the equation of motion for $r$. Plugging $r^2 = x^2 + y^2$ into the above system, and considering its derivative $\ds r\frac{dr}{dt} = x\frac{dx}{dt} + y\frac{dy}{dt}$, we have
+  \begin{equation}
+    \begin{split}
+      r\frac{dr}{dt} &= x(2x-y - x(x^2+y^2)) + y(x+2y-y(x^2+y^2))\\
+      &= 2x^2 + 2y^2 - (x^2+y^2)(x^2+y^2)\\
+      &= 2r^2 - r^2r^2\\
+      &= r^2(2-r^2),
+    \end{split}
+  \end{equation}
+  which gives the equation of motion
+  \begin{equation}
+    \frac{dr}{dt} = r(2-r^2).
+  \end{equation}
+
+  2. \underline{Angular dynamics}\\
+  Now we fix $r$, and focus on the derivative with respect to $\theta$. Switching to dot notation for time derivatives (I am tired of writing $d/dt$), and using $x = r\cos\theta,\,y = r\sin\theta$, we calculate
+  \begin{equation}\label{eq:angular-dynamics1}
+    \begin{split}
+      x\dot y - y\dot x &= r\cos\theta\left(r\cos\theta \dot\theta + \dot r\sin\theta\right) - r\sin\theta\left(r(-\sin\theta)\dot\theta + \dot r\cos\theta\right)\\
+      &= r^2\cos^2\theta\dot\theta + r^2\sin^2\theta\dot\theta\\
+      &= r^2\dot\theta.
+    \end{split}
+  \end{equation}
+  Note that if $x$ and $y$ were interpreted as the cartesian coordinates of some particle in space, $r^2\dot\theta$ is proportional to the angular momentum of the particle, a conserved quantity! (In physics, when the forces are conservative. This example certainly doesn't represent such a system. In fact, the following shows that this is only conserved in the trivial case where the trajectory is circular. Sadness.)
+
+  Now using the right hand side of the original system, we expand the left hand side of (\ref{eq:angular-dynamics1}) to get
+  \begin{equation}
+    \begin{split}
+      r^2\frac{d\theta}{dt} &= x\dot y - y\dot x\\
+      &= x(x+2y - y(x^2+y^2)) - y(2x-y-x(x^2+y^2))\\
+      &= x^2 + y^2\\
+      &= r^2
+    \end{split}
+  \end{equation}
+  which implies
+  \begin{equation}
+    \frac{d\theta}{dt} = 1.
+  \end{equation}
+
+  3. \underline{Global dynamics}\\
+  From the equation of motion for $r$, we see that $r = \sqrt2$ is a stable critical point for the one dimensional system $r = r(t)$.
 
 \end{enumerate}
 
