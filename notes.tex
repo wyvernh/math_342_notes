@@ -70,6 +70,8 @@
 \newcommand{\ov}[1]{\overline{#1}}
 \newcommand{\lcm}{\textrm{lcm}}
 
+\DeclareMathOperator{\tr}{tr}
+
 \title{MATH 342 Notes}
 \author{Matthew Hinton}
 \date{\today}
@@ -1827,7 +1829,220 @@ The Lyapunov method is a way of classifying critical points with the use of a di
   \end{equation}
 
   3. \underline{Global dynamics}\\
-  From the equation of motion for $r$, we see that $r = \sqrt2$ is a stable critical point for the one dimensional system $r = r(t)$.
+  From the equation of motion for $r$, it can be seen that $r = \sqrt2$ is a stable critical point for the one dimensional system $r = r(t)$. The full 2D system is now described in polar coordinates by
+  \begin{equation}\label{eq:polar-coordinates-new-first-order-system}
+    \begin{cases}
+      \dot r = r(2-r^2)\\
+      \dot \theta = 1
+    \end{cases}
+  \end{equation}
+  As a remark, note that we can recover the original system by simply differentiating $x = r\cos\theta$ and $y = r\sin\theta$:
+  \begin{equation}
+    \begin{split}
+      \frac{dx}{dt} &= r(-\sin\theta)\frac{d\theta}{dt} + \frac{dr}{dt}\cos\theta\\
+      &= r(-\sin\theta)(1) + (2r - r^3)\cos\theta\\
+      &= -y + 2x - x(x^2 + y^2)
+    \end{split}
+  \end{equation}
+  (the $dy/dt$ calculation is similar). Therefore (\ref{eq:polar-coordinates-new-first-order-system}) contains exactly the same information as the original expression for the system in terms of $x$ and $y$. (If you are worried about the singularity in the polar coordinates at the origin, note that the values of $dx/dt$ and $dy/dt$ can be filled in at this point using continuity of the derivatives).
+
+  In fact, the equation $\dot\theta = 1$ tells us that critical points can only correspond to points where $\theta$ fails to be a good coordinate; i.e. it is very clear in the polar coordinate form that the only critical point is the origin. But to go beyond critical points and to talk about limit cycles, the $\dot r$ equation is of interest. Factoring into linear polynomials, we have
+  \begin{equation}
+    \frac{dr}{dt} = r(\sqrt 2 - r)(-\sqrt{2} -r).
+  \end{equation}
+  As mentioned above, $r = \sqrt{2}$ is a stable value of $r$ in the sense that any solution $r(t),\theta(t)$ such that $r(t_0) = \sqrt{2}$ for some $t_0$ will remain at $r = \sqrt{2}$ forever (it is a circular periodic solution), and moreover we have the following analysis. Consider the interior and exterior regions of the plane defined by the circle $r = \sqrt{2}$. In the interior region, $r < \sqrt{2} \implies dr/dt > 0$ and we have a spiral solution curve converging outwards to $r = \sqrt{2}$. In the exterior region, $r > \sqrt{2} \implies dr/dt < 0$ and we have a spiral converging inwards to $r = \sqrt{2}$. This behaviour indicates that the circle at $r = \sqrt{2}$ has some serious stability property.
+
+  Call the circle of radius $r = \sqrt{2}$ $C_{\sqrt{2}}$. We call $C_{\sqrt{2}}$ a \textbf{stable limit cycle} in this case, meaning every solution curve converges to $C_{\sqrt{2}}$. Similarly, an \textbf{unstable limit cycle} is a periodic solution with all other solution curves spiralling away. Finally, a \textbf{semistable limit cycle} is a periodic solution such that some other solutions converge to it, but not every solution. One can easily cook up examples of these other cases. I'll throw in an example of a system with all three kinds of limit cycles. Let
+  \begin{equation}
+    \begin{cases}
+      \dot r = (r-1)(r-2)^2(r-3)\\
+      \dot \theta = -1
+    \end{cases}
+  \end{equation}
+  Clearly $r = 1,2,3$ correspond to limit cycles of the system, and because $\dot\theta < 0$ all solution curves now proceed clockwise around the origin. We split the analysis into cases, again corresponding to the various regions on the phase plot.
+
+  \underline{$r < 1$}: $dr/dt > 0$ and so solution curves spiral out towards $r = 1$;\\
+  \underline{$1 < r < 2$}: $dr/dt < 0$ and so solution curves spiral away from $r=2$ towards $r = 1$;\\
+  \underline{$2 < r < 3$}: $dr/dt < 0$ and so solution curves spiral away from $r=3$ towards $r = 2$;\\
+  \underline{$r > 3$}: $dr/dt > 0$ and so solution curves spiral out away from $r = 3$.
+
+  Observe from this qualitative analysis that $r = 1$ is a stable limit cycle, $r = 2$ is semistable, and $r = 3$ is unstable.
+
+  \medskip
+
+\item \underline{Theorem.} (Poincar\'e-Bendixson theorem.)
+
+  Suppose $R$ is a compact region (a closed and bounded subset of $\RR^2$) containing no critical points of a first order system. If $x(t)$ is a solution such that $x$ is eventually in $R$ (there exists $t_0 \in\RR$ such that $x(t) \in R$ for all $t \geq t_0$), then either\\
+  1. $x(t)$ converges to a limit cycle; or\\
+  2. $x(t)$ is itself a limit cycle.
+
+  \underline{Remark:} If one can find such a region and a solution curve eventually in that region, one can conclude that a limit cycle exists without necessarily having to construct the limit cycle in the first place. In many cases, however, having an explicit solution usually means one is already capable of seeing what the limit cycle should be. Thus the theorem seems to be the most powerful when one cannot directly solve the system but is able to argue that a solution exists and is confined to such a region.
+
+  For example, let us forget for the moment that we already know the limit cycle solution to the system analysed previously:
+  \begin{equation}\label{eq:poincare-bendixson-example}
+    \begin{cases}
+      \dot r = r(2-r^2)\\
+      \dot \theta= 1
+    \end{cases}
+  \end{equation}
+  Let $R$ be the closed annulus $R = \left\{(r,\theta)\big|1 \leq r \leq 2 \right\}$. Then $R$ is closed and bounded and does not contain the only critical point of the system, namely the origin. All that remains is to choose a solution curve eventually in $R$. But if we let $r(t_0) = 1$, $\theta(t_0) = 0$, the resulting curve starts out in $R$ and satisfies $dr/dt > 0$ whenever $r < \sqrt{2}$ and $dr/dt < 0$ whenever $r > \sqrt{2}$. Since such curves can only pass through the boundaries $r = 1$ and $r=2$ of $R$ on their way into the region, we conclude that $(r(t),\theta(t))$ never leaves $R$. By the Poincar\'e-Bendixson theorem, there exists a limit cycle of (\ref{eq:poincare-bendixson-example}) and moreover it lies in the annulus $1 \leq r \leq 2$.
+
+\end{enumerate}
+
+\subsection{Some applications}
+
+\begin{enumerate}
+
+\item Logistic equation (a biological application).
+
+  Let $x$ denote the population size of some species. A prototypical biological model is the \textbf{logistic equation}, which reads
+  \begin{equation}\label{eq:logistic-equation}
+    \frac{dx}{dt} = rx\left(1-\frac{x}{k}\right).
+  \end{equation}
+  When $x \ll k$, the logistic equation reduces approximately to the linear equation for exponential growth $dx/dt \approx rx$. $k$ is called the \textbf{carrying capacity}, because $dx/dt = 0$ when $x = k$, so $k$ is a critical point (in fact a stable critical point) of the first order system where the population is unchanging. We will look at several predator prey systems modelled on the logistic equation.
+
+\item \underline{Example}
+  \begin{equation}
+    \begin{cases}
+      \frac{dx}{dt} = x(1 - x - y)\\
+      \frac{dy}{dt} = y\left(\frac{3}{4} - y - \frac{1}{2}x\right)
+    \end{cases}
+  \end{equation}
+  This system secretly contains two logistic equations (the $x(1-x)$ and $y(3/4-y)$ parts of the right hand side), as well as an ``interaction'' between the two species describing their predator/prey relationship. We can apply our previous methods to study this nonlinear first order system. First of all, the critical points are the intersection points of the sets where $dx/dt = 0$ and $dy/dt = 0$. Looking at the form of the right hand side, we can see that both of these sets are just unions of lines. This motivates the following terminology.
+
+  The \textbf{$x$-nullcline} is the union of the lines $x = 0$ and $1 - x - y = 0$ (the line passing through $(1, 0)$ and $(0, 1)$).
+
+  The \textbf{$y$-nullcline} is the union of the lines $y = 0$ and $\frac{3}{4} - y - \frac{1}{2}x = 0$ (the line passing through $\left(\frac{3}{2}, 0\right)$ and $\left(0, \frac{3}{4}\right)$).
+
+  In general, the $x$- (respectively, $y$-)nullcline is the set of points on which $dx/dt$ (respectively, $dy/dt$) vanishes.
+
+  The critical points are the intersection points of the $x$-nullcline and the $y$-nullcline. They are $(0, 0)$, which represents both species being extinct; $(1,0)$, with species $x$ at carrying capacity and $y$ extinct; $\left(0,\frac{3}{4}\right)$, with species $x$ extinct and $y$ at carrying capacity; and $\left(\frac{1}{2},\frac{1}{2}\right)$, which is the intersection point of the two nontrivial nullclines.
+
+  Drawing the nullclines on a phase diagram splits the domain (in this case the first quadrant of the $xy$-plane) into regions which we can label by the signs of $dx/dt$ and $dy/dt$. Looking at the resulting diagram, we can classify $(1/2,1/2)$ is a stable critical point. In biology it is called a \textbf{coexistence equilibrium}.
+
+  \medskip
+
+\item \underline{Example} (Lotka-Volterra equation.) Consider the Lotka-Volterra system
+  \begin{equation}
+    \begin{cases}
+      \frac{dx}{dt} = x(2-y) = F(x,y)\\
+      \frac{dy}{dt} = y(-1 + x) = G(x,y)
+    \end{cases}
+  \end{equation}
+  A comment on the coefficients. The ``2'' in $dx/dt$ represents a growth rate of the prey $x$ in this model, and the ``-1'' in $dy/dt$ represents a decay rate of the predator $y$.
+
+  We can do a locally linear system analysis on this equation. We should compute the Jacobian
+  \begin{equation}
+    J(x,y) =
+    \begin{pmatrix}
+      F_x & F_y\\
+      G_x & G_y
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      2-y & -x\\
+      y & -1+x
+    \end{pmatrix}.
+  \end{equation}
+  Let's look at the critical point $(x,y) = (1,2)$. The linear behaviour of the system about this point is given by
+  \begin{equation}
+    J(1,2) =
+    \begin{pmatrix}
+      0 & -1\\
+      2 & 0
+    \end{pmatrix}
+  \end{equation}
+  This is a nonsingular matrix, but upon computing the eigenvalues we find $\lambda = \pm \sqrt{2}i$. Unfortunately, this is precisely the case (eigenvalues purely imaginary) when locally linear analysis is inconclusive; no results from the linear system carry over to the original nonlinear one.
+
+  Now let us consider the exact solution curves to the nonlinear system. To solve for these, we find the autonomous system
+  \begin{equation}
+    \frac{dy}{dx} = \frac{dy/dt}{dx/dt} = \frac{y(-1+x)}{x(2-y)} = \left(\frac{y}{2-y}\right)\left(\frac{-1+x}{x}\right)
+  \end{equation}
+  Luckily, this equation is fairly easy to solve, as it is separable. We rearrange and simplify to get
+  \begin{equation}
+    \left(\frac{2}{y} - 1\right)dy = \left(\frac{-1}{x} + 1\right)dx,
+  \end{equation}
+  and integrating, we have
+  \begin{equation}
+    2\ln y - y = -\ln x + x + C.
+  \end{equation}
+  The absolute values are ignored because $x$ and $y$ represent populations in this model; we are not considering negative $x$ and $y$. We can capture these solution curves by writing them as the level curves of a function $H(x,y)$, by writing
+  \begin{equation}
+    H(x,y) = 2\ln y - y + \ln x - x.
+  \end{equation}
+
+  \medskip
+
+\item \underline{Hamiltonian systems.} The setting is as follows.
+
+  1. $x$ stands for the generalised position (or configuration space variable);
+  2. $y$ stands for the generalised momentum.
+
+  In physics, one might use $q$ and $p$ (or $x$ and $p$) for generalised position and momentum.
+
+  The \textbf{Hamiltonian} is defined to be a smooth function $H(x,y)$, that represents the total energy of the system. The Hamiltonian system (Hamilton's equations of motion) are
+  \begin{equation}
+    \dot x = \frac{\partial H}{\partial y},\quad\quad\quad
+    \dot y = -\frac{\partial H}{\partial x}
+  \end{equation}
+  In a sense, the first equation captures the idea that a particle with more momentum ``moves faster'', and the second equation is the corresponding generalisation of Newton's second law.
+
+  \medskip
+  \underline{Example} (Newtonian system.)
+
+  We let $x$ denote position (along a line) and $y = m\dot x$ the classical momentum of a point particle. From physics, $H(x,y)$ takes the form
+  \begin{equation}
+    H(x,y) = \frac{1}{2}m\dot x^2 + V(x)
+    = \frac{y^2}{2m} + V(x)
+  \end{equation}
+  where $V$ is a function of $x$ \emph{only}, representing the potential energy of a conservative force (all position-dependent forces are conservative in 1 dimension, but the situation becomes more complicated in higher dimensions).
+
+  The first Hamilton equation becomes
+  \begin{equation}
+    \frac{\partial H}{\partial y} = \frac{2y}{2m} = \frac{y}{m} = \dot x,
+  \end{equation}
+  and the second Hamilton equation becomes
+  \begin{equation}
+    \dot y = -\frac{\partial H}{\partial x} = -\frac{\partial V}{\partial x} = F,
+  \end{equation}
+  where $F$ is the force corresponding to the potential $V$. This is exactly Newton's second law, which says that the rate of change of momentum is equal to the force on the particle.
+
+  Back to the general case, we can define the phase space variable $u = [x, y]^T$, and summarise Hamilton's equations by
+  \begin{equation}
+    \dot u = f(u) =
+    \begin{pmatrix}
+      0 & 1\\
+      -1 & 0
+    \end{pmatrix}
+    \begin{pmatrix}
+      \partial H/\partial x\\
+      \partial H/\partial y
+    \end{pmatrix}(u)
+  \end{equation}
+  (the vector on the right is a function of $u$).
+
+  From this equation we can derive a very important property of Hamiltonian systems, which is Liouville's theorem, or the divergence-free property. To derive this, we simply evaluate
+  \begin{equation}
+    \nabla\cdot f = \frac{\partial f_1}{\partial x} + \frac{\partial f_2}{\partial y}
+    = \frac{\partial}{\partial x}\left(\frac{\partial H}{\partial y}\right) + \frac{\partial}{\partial y}\left(\frac{\partial H}{\partial x}\right)
+    = \frac{\partial^2H}{\partial x \partial y} - \frac{\partial^2H}{\partial y\partial x}.
+  \end{equation}
+  By Clairout's theorem, under very mild regularity assumptions (continuity of the second derivatives) we can exchange the order of differentiation and in this case we can conclude that $\nabla\cdot f = 0$. A very physically interesting consequence of this divergence-free property, which we will not go into here, is that areas in phase space ($(x,y)$-space) are preserved by evolution under Hamilton's equations of motion. When interpreted in many body mechanics, this becomes a continuity equation on the phase space that describes conservation of probability in some sense.
+
+  Now we do some locally linear analysis. The Jacobian is
+  \begin{equation}
+    J =
+    \begin{pmatrix}
+      \partial f_1/\partial x & \partial f_1/\partial y\\
+      \partial f_2/\partial x & \partial f_2/\partial y
+    \end{pmatrix}
+    =
+    \begin{pmatrix}
+      \partial^2H/\partial x\partial y & \partial^2H/\partial y^2\\
+      -\partial^2H/\partial x^2 & -\partial^2H/\partial y\partial x
+    \end{pmatrix}
+  \end{equation}
+  Let's look at the trace of $J$, the sum of the diagonal entries. From our previous calculation, and looking at the above matrix, we can see that $\tr(J) = 0$. On the other hand, the trace of $J$ is the sum of its eigenvalues $\tr(J) = \lambda_1 + \lambda_2$, so this means we cannot have any sources or sinks, spiral or otherwise. Why? Because a source requires the real part of both eigenvalues positive, and a sink require the real part of both eigenvalues to be negative. In either case, we would fail to satisfy $\lambda_1 + \lambda_2 = 0$.
 
 \end{enumerate}
 
