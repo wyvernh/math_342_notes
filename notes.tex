@@ -2049,8 +2049,8 @@ The Lyapunov method is a way of classifying critical points with the use of a di
   \begin{equation}
     \begin{split}
       \frac{d}{dt}H(x(t),y(t)) &= \frac{\partial H}{\partial x}\frac{\partial x}{\partial t} + \frac{\partial H}{\partial y}\frac{\partial y}{\partial t}\\
-      &= ...\\
-      &= 0
+      &= \frac{\partial H}{\partial x}\frac{\partial H}{\partial y} - \frac{\partial H}{\partial y}\frac{\partial H}{\partial x}\\
+      &= 0.
     \end{split}
   \end{equation}
   This result is called \textbf{conservation of energy}, in analogy with the physical interpretation. The consequence is that every solution curve is a level curve of $H$ (since $H(x,y)$ is equal to a constant).
