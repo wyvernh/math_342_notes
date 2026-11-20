@@ -2007,6 +2007,7 @@ The Lyapunov method is a way of classifying critical points with the use of a di
   \end{equation}
   where $F$ is the force corresponding to the potential $V$. This is exactly Newton's second law, which says that the rate of change of momentum is equal to the force on the particle.
 
+  \underline{In general...}\\
   Back to the general case, we can define the phase space variable $u = [x, y]^T$, and summarise Hamilton's equations by
   \begin{equation}
     \dot u = f(u) =
@@ -2042,8 +2043,121 @@ The Lyapunov method is a way of classifying critical points with the use of a di
       -\partial^2H/\partial x^2 & -\partial^2H/\partial y\partial x
     \end{pmatrix}
   \end{equation}
-  Let's look at the trace of $J$, the sum of the diagonal entries. From our previous calculation, and looking at the above matrix, we can see that $\tr(J) = 0$. On the other hand, the trace of $J$ is the sum of its eigenvalues $\tr(J) = \lambda_1 + \lambda_2$, so this means we cannot have any sources or sinks, spiral or otherwise. Why? Because a source requires the real part of both eigenvalues positive, and a sink require the real part of both eigenvalues to be negative. In either case, we would fail to satisfy $\lambda_1 + \lambda_2 = 0$.
+  Let's look at the trace of $J$, the sum of the diagonal entries. From our previous calculation, and looking at the above matrix, we can see that $\tr(J) = 0$. On the other hand, the trace of $J$ is the sum of its eigenvalues $\tr(J) = \lambda_1 + \lambda_2$, so this means we cannot have any sources or sinks, spiral or otherwise. Why? Because a source requires the real part of both eigenvalues positive, and a sink require the real part of both eigenvalues to be negative. In either case, we would fail to satisfy $\lambda_1 + \lambda_2 = 0$. So the Hamiltonian system has \underline{no sources or sinks} by locally linear analysis.
+
+  \underline{Lyapunov analysis} We can view $H(x,y)$ as a Lyapunov function on the Hamiltonian system. We have
+  \begin{equation}
+    \begin{split}
+      \frac{d}{dt}H(x(t),y(t)) &= \frac{\partial H}{\partial x}\frac{\partial x}{\partial t} + \frac{\partial H}{\partial y}\frac{\partial y}{\partial t}\\
+      &= ...\\
+      &= 0
+    \end{split}
+  \end{equation}
+  This result is called \textbf{conservation of energy}, in analogy with the physical interpretation. The consequence is that every solution curve is a level curve of $H$ (since $H(x,y)$ is equal to a constant).
+
+  \medskip
+  \underline{Another example.}
+  \begin{equation}\label{eq:another-hamiltonian-system}
+    \begin{cases}
+      \dot x = 8y + ax^2y\\
+      \dot y = -2x + 2xy^2
+    \end{cases}
+  \end{equation}
+  We will: (a) find a value of $a$ such that the system is Hamiltonian, and construct the associated Hamiltonian function; (b) analyse the critical points using the Jacobian. We want
+  \begin{align}
+    \frac{\partial H}{\partial y} &= 8y + ax^2y\\
+    -\frac{\partial H}{\partial x} &= -2x+2xy^2.
+  \end{align}
+  Notice that the derivative of the first expression with respect to $x$ must be equal to (negative) the derivative of the second expression with respect to $y$ (exchanging the partial derivatives by Clairout's theorem). In other words,
+  \begin{align}
+    \frac{\partial}{\partial x}\left(8y + ax^2y\right) &= \frac{\partial}{\partial y}\left(2x-2xy^2\right)\quad\forall (x,y)\\
+    \iff 2axy &= -4xy\quad\forall(x,y)\\
+    \iff a &= -2.
+  \end{align}
+  If $a$ is chosen to be $-2$, the system is therefore Hamiltonian and all we have to do is construct $H$.
+  \begin{equation}
+    \begin{split}
+      H(x,y) &= \int\frac{\partial H}{\partial x}dx\\
+      &= \int(2x-2xy^2)dx\\
+      &= x^2 - x^2y^2 + C(y),
+    \end{split}
+  \end{equation}
+  where $C(y)$ is an as-of-yet undetermined function of $y$. Carrying out the integration with respect to $y$, we have
+  \begin{equation}
+    \begin{split}
+      H(x,y) &= \int\frac{\partial H}{\partial y}dy\\
+      &= \int(8y - 2x^2y)dy\\
+      &= 4y^2 - x^2y^2 + D(x).
+    \end{split}
+  \end{equation}
+  Comparing the two forms of $H(x,y)$, we deduce that $D(x) = x^2$ plus a constant (or equivalently $C(y) = 4y^2$ plus a constant). Thus
+  \begin{equation}
+    H(x,y) = x^2 - x^2y^2 + 4y^2 + C
+  \end{equation}
+  where $C$ is an arbitrary constant.
+
+  Now we can look for critical points. Setting the right hand side of (\ref{eq:another-hamiltonian-system}) to zero, and plugging in $a = -2$, we have the possibilities
+  \begin{equation}
+    \begin{cases}
+      x^2 = 4,\quad y = 0\\
+      x = 0,\quad y^2 = 1
+    \end{cases}
+  \end{equation}
+  The critical points are thus $(0,0)$ and $(\pm 2,\pm 1)$. By taking all the partial derivatives, one finds the Jacobian
+  \begin{equation}
+    J(x,y) =
+    \begin{pmatrix}
+      -4xy & 8 - 2x^2\\
+      -2+2y^2 & -4xy
+    \end{pmatrix}
+  \end{equation}
+  For $J(0,0)$, we find the characteristic equation $\lambda^2 + 16$. But this polynomial only has purely imaginary roots $\pm 4i$, and this is the case where locally linear analysis fails. So the test is inconclusive for $(0,0)$.\\
+  For $J(2,1)$, win find the characteristic equation $(\lambda-8)(\lambda+8)$, so $J(2,1)$ has real eigenvalues of opposite sign. So $(2,1)$ is an unstable saddle point.
+
+  Notice that the trace of each of the Jacobians vanishes! This is guaranteed by our general analysis of Hamiltonian systems. So a good check of whether you did your arithmetic correctly for Hamiltonian systems is to eyeball the trace of $J$ and make sure it is zero.
 
 \end{enumerate}
+
+\section{Bifurcations in First Order Differential Equations}
+
+The reference for this section is Chapter 6 of the Paul C. Matthews textbook.
+
+We begin this section with an example. Consider the differential equation
+\begin{equation}
+  \frac{dx}{dt} = f(x,\mu)\\
+  = 25x^2 + \mu^2 - 100
+\end{equation}
+where $\mu$ is a real parameter. Consider the critical points ($dx/dt = 0$). They will be functions of $\mu$. Setting the right hand side to zero,
+\begin{equation}\label{eq:first-example-of-branches}
+  25x^2 + \mu^2 = 100
+  \implies \frac{x^2}{4} + \frac{\mu^2}{100} = 1
+  \implies \left(\frac{x}{2}\right)^2 + \left(\frac{\mu}{10}\right)^2 = 1.
+\end{equation}
+This is the equation for an ellipse with $x$ between $-2$ and $2$, and $\mu$ between $-10$ and $10$. Drawing the ellipse on an $x\mu$-plane, we see that (\ref{eq:first-example-of-branches}) does not do to define $x$ (the critical point) as a function of $\mu$. For there are two possible solutions! We can however capture both critical points with two functions $x(\mu)$:
+\begin{equation}
+  x(\mu) = +\frac{1}{5}\sqrt{100 - \mu^2}\quad\quad -10 < \mu < 10
+\end{equation}
+and
+\begin{equation}
+  x(\mu) = -\frac{1}{5}\sqrt{100 - \mu^2}\quad\quad -10 < \mu < 10.
+\end{equation}
+These two functions are called \textbf{branches} (the top branch and the bottom branch, espectively). Notice we have left the ``bifurcation points'' $\mu = \pm10$ out of the definition of the branches. This is intentional, and we will return to these points later.
+
+We can look at the stability of the two critical points by using the derivative $f_x = 50x$. In the top branch, $f_x > 0$. We claim that for the upper branch,
+\begin{equation}\label{eq:top-branch-stability}
+  \begin{cases}
+    \dot x = f(x,\mu) > 0,\quad x > x(\mu)\\
+    \dot x = f(x,\mu) < 0,\quad x < x(\mu)
+  \end{cases}
+\end{equation}
+and hence $x(\mu)$ is unstable. To see why this is true, write
+\begin{equation}
+  f_x(x(\mu),\mu) = \lim_{x\to x(\mu)}\frac{f(x,\mu)-f(x(\mu),\mu)}{x-x(\mu)}
+  \approx \frac{f(x,\mu)-f(x(\mu),\mu)}{x-x(\mu)} = \frac{f(x,\mu)}{x-x(\mu)}\quad
+  \text{when $x\approx x(\mu)$}.
+\end{equation}
+Thus for $x>x(\mu)$, $f_x$ and $f(x,\mu)$ have the same sign, and when $x < x(\mu)$, $f_x$ and $f(x,\mu)$ have opposite sign. Since $f_x = 50x > 0$ near the top branch, we have (\ref{eq:top-branch-stability}).
+
+A similar analysis for the bottom branch shows that all those critical points $x=x(\mu)$ are all stable.
 
 \end{document}
