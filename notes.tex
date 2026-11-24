@@ -1559,7 +1559,7 @@ The Lyapunov method is a way of classifying critical points with the use of a di
   The function $V(x,y)$, in dynamical systems, is called a \textbf{Lyapunov function}. Notice that $V$ is nonnegative everywhere, and is strictly positive away from the origin:
   \begin{equation}
     V(0,0) = 0,\quad\quad\quad
-    V(x,y) > 0 \forall (x,y) \neq (0,0).
+    V(x,y) > 0 \quad\forall (x,y) \neq (0,0).
   \end{equation}
   Remembering that $y = \dot x$, we see that $(0,0)$ is an equilibrium point; the mass does not move after being placed at $x = 0$.
 
@@ -2158,6 +2158,94 @@ and hence $x(\mu)$ is unstable. To see why this is true, write
 \end{equation}
 Thus for $x>x(\mu)$, $f_x$ and $f(x,\mu)$ have the same sign, and when $x < x(\mu)$, $f_x$ and $f(x,\mu)$ have opposite sign. Since $f_x = 50x > 0$ near the top branch, we have (\ref{eq:top-branch-stability}).
 
-A similar analysis for the bottom branch shows that all those critical points $x=x(\mu)$ are all stable.
+A similar analysis for the bottom branch shows that all those critical points $x=x(\mu)$ are all stable. In general, for the first order system
+\begin{equation}
+  \frac{dx}{dt} = f(x,\mu)
+\end{equation}
+with parameter $\mu$, all the critical points at which $f_x > 0$ are unstable, and those for which $f_x < 0$ are stable.
+
+Notice that the obstruction to continuing our analysis past $\mu = 10$ (the bifurcation point) is a change in the number of critical points (from two to one to zero).
+
+\begin{enumerate}
+\item \underline{Generalised form and some definitions.}
+
+  We consider the first order system
+  \begin{equation}\label{eq:bifurcations-system}
+    \frac{dx}{dt} = f(x,\mu),\quad\quad x\in \RR,\quad\mu\in\RR.
+  \end{equation}
+  The \textbf{critical points} are the $x^*$ such that $f(x^*,\mu) = 0$ (so the critical points depend on the parameter $\mu$).
+
+  There are three stability cases for critical points. To summarise, we have said that
+  \begin{enumerate}
+  \item $f_x(x^*,\mu)>0$: $x^*$ is unstable;
+  \item $f_x(x^*,\mu)<0$: $x^*$ is stable;
+  \end{enumerate}
+  but we haven't talked about the case $f_x(x^*,\mu)=0$. Before discussing this case, we will talk about bifurcations.
+
+  \underline{Bifurcations.} An informal definition (we will give a more formal one later), is the following. We say \emph{a bifurcation occurs at $(x^*_c,\mu_c)$ if there is a qualitative change in the phase line of $\dot x = f(x,\mu)$ as $\mu$ passes through $\mu_c$.} In this situation, $(x_c,\mu_c)$ is called a \textbf{bifurcation point}.
+
+  We will also need an informal statement of the \underline{Implicit Function Theorem.} Assume $f(x_0,\mu_0) = 0$, and $f_x(x_0,\mu_0) \neq 0$. (We have in mind that $x_0$ is a critical point for $\mu = \mu_0$, but the statement we are about to make is very general and the starting point for manifold theory, incidentally). Then near $(x_0,\mu_0)$, the equation
+  \begin{equation}
+    f(x,\mu) = 0
+  \end{equation}
+  admits a unique function $x = x(\mu)$ with $x(\mu_0) = x_0$ such that
+  \begin{equation}
+    f(x(\mu),\mu) = 0.
+  \end{equation}
+  Moreover, its derivative is given by
+  \begin{equation}\label{eq:implicit-fn-derivative}
+    \frac{dx(\mu)}{d\mu} = -\frac{f_\mu(x(\mu),\mu)}{f_x(x(\mu),\mu)} = -\frac{f_\mu}{f_x}\bigg|_{(x(\mu),mu)}.
+  \end{equation}
+
+  There are several ideas captured by this theorem. The first is that since the derivative $f_x$ is nonzero at $(x_0,\mu_0)$, the function $f(x,\mu)$ is approximated by a linear function
+  \begin{equation}\label{eq:linear-approx-implicit-fn}
+    f(x,\mu)\simeq f(x_0,\mu_0) + f_x(x_0,\mu_0)(x-x_0) + f_\mu(x_0,\mu_0)(\mu-\mu_0)
+    \implies f_x(x_0,\mu_0)(x-x_0) \simeq -f_\mu(x_0,\mu_0)(\mu-\mu_0)
+  \end{equation}
+  with the coefficient in front of $(x-x_0)$ nonzero. And we know that the linear function of $x$ on the right hand side can be ``inverted'' in this case. The implicit function theorem is really a statement about when a differentiable function $\mu(x)$ can be inverted (locally) to give a differentiable function $x(\mu)$. It says it is enough that the first derivative is nonzero at that point.
+
+  If you take the limit $\mu-\mu_0\to 0$ in (\ref{eq:linear-approx-implicit-fn}), and rearrange the coefficients $f_x$ and $f_\mu$, you can recover (\ref{eq:implicit-fn-derivative}).
+
+  \medskip
+
+  \underline{Formal definition of bifurcations.} Now we can give a formal definition motivated by the implicit function theorem. Formally, a bifurcation occurs at $(x_c,\mu_c)$ if
+  \begin{enumerate}
+  \item $f(x_c,\mu_c) = 0$ (\emph{i.e.}, $x_c$ is a critical point of (\ref{eq:bifurcations-system}) for $\mu = \mu_c$);
+  \item $f_x(x_c,\mu_c) = 0$ (\emph{i.e.} the implicit function theorem does not apply);
+  \item Along the level curve $f(x,\mu) = 0$ through $(x_c,\mu_c)$, $f_x$ experiences a sign change.
+  \end{enumerate}
+  To see why condition (c) is important, consider the example
+
+  \underline{Example}
+  \begin{equation}
+    \frac{dx}{dt} = \mu - x^3 \implies x(\mu) = \mu^{1/3},\quad\forall \mu \in \RR
+  \end{equation}
+  There are no bifurcations. However, considering just the first two conditions, $f(0,0) = 0$ and $f_x(0,0) = -3x^2|_{x = 0} = 0$ so both are satisfied by $x = \mu = 0$. This point is excluded by the third condition, because $f_x$ does not experience a sign change at $(0,0)$ (it is always nonpositive).
+
+  \medskip
+
+\item \underline{Bifurcations in general nonlinear systems.}
+
+  Consider (\ref{eq:bifurcations-system}). We make the following assumption.
+
+  \underline{Assumption:} $f(0,0) = 0$, and $f_x(0,0) = 0$ (the implicit function theorem does not apply).
+
+  In the spirit of the locally linear analysis we did earlier, we Taylor expand the original system. But this time, we do it to second order. For $|x|,|\mu| \ll 1$,
+  \begin{equation}
+    \frac{dx}{dt} = f(x,\mu) \simeq f(0,0) + f_x(0,0)x + f_\mu(0,0)\mu + \frac{1}{2}f_{xx}(0,0)x^2 + f_{x\mu}(0,0)x\mu + \frac{1}{2}f_{\mu\mu}(0,0)\mu^2.
+  \end{equation}
+  Using our assumptions to kill the first two terms, we have $dx/dt$ as the second-order polynomial
+  \begin{equation}
+    \frac{dx}{dt} \simeq f_\mu(0,0)\mu + \frac{1}{2}f_{xx}(0,0)x^2 + f_{x\mu}(0,0)x\mu + \frac{1}{2}f_{\mu\mu}(0,0)\mu^2.
+  \end{equation}
+  \underline{Case 1} (Saddle-node bifurcations.) When $f_{\mu},\,f_{xx}\neq 0$ at $(0,0)$, but $f_{x\mu},\,f_{\mu\mu} = 0$ or can be ignored, we have the reduced differential equation
+  \begin{equation}
+    \frac{dx}{dt} \simeq f_\mu(0,0)\mu + \frac{1}{2}f_{xx}(0,0)x^2.
+  \end{equation}
+  An example is the first system we looked at, $f(x,\mu) = 25x^2 + \mu^2 - 100$, when we allow ourselves to ignore the $f_{\mu\mu}$ term.
+
+
+\end{enumerate}
+
 
 \end{document}
